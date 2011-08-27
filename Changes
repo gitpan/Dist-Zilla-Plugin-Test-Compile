@@ -1,0 +1,76 @@
+Revision history for Dist::Zilla::Plugin::CompileTests
+
+1.112390  2011-08-27 11:40:32 Europe/Paris
+ - renamed to Dist::Zilla::Plugin::Test::Compile. DZP::CompileTests,
+   although deprecated, continues to work (fredric kent)
+ - eliminate multiple phases work (fredric kent)
+
+1.112380  2011-08-26 13:28:44 Europe/Paris
+ - skip non-perl scripts in bin directory (harley pig)
+
+1.110930  2011-04-03 11:19:08 Europe/Paris
+ - fix rt#67183 - do not fail if no bin directory exists
+
+1.110870  2011-03-28 12:44:54 Europe/Paris
+ - allow regex skip of script files (jesse luehrs)
+
+1.103030  2010-10-30 15:00:24 Europe/Paris
+ - Removed reuse of Test::NeedsDisplay. It fails when DISPLAY is not
+   set! (ahmad m. zawawi)
+
+1.103010  2010-10-28 17:26:19 Europe/Paris
+ - no_display is now called needs_display and it reuses 
+   Test::NeedsDisplay (ahmad m. zawawi)
+
+1.103000  2010-10-27 09:16:26 Europe/Paris
+ - new option no_display to skip tests on non win32 systems when
+   $ENV{DISPLAY} is not set (ahmad m. zawawi)
+
+1.101800  2010-06-29 18:42:20 Europe/Paris
+ - skip all if no test are to be run (jesse luehrs)
+ - require module instead of use, to test only compilation (jesse luehrs)
+
+1.101600  2010-06-09 13:01:21 Europe/Paris
+ - fix #55957: strip leading white spaces in module output
+
+1.101500  2010-05-30 17:55:12 Europe/Paris
+ - fix #57974: test::script 1.05 changed its interface
+
+1.100740  2010-03-15 18:29:52 Europe/Paris
+ - allow PERL5OPT to get a chance to be respected (marcel gruenauer)
+
+1.100220  2010-01-22 16:26:16 Europe/Paris
+ - new param fake_home to control $ENV{HOME} faking
+
+1.100160  2010-01-16 14:43:14 Europe/Paris
+ - requiring perl 5.8.x
+ - faking $ENV{HOME} for cpantesters
+
+1.092870 Wed Oct 14 09:10:00 2009
+ - fix: skip did not update test count
+
+1.092840 Sun Oct 11 19:12:32 2009
+ - support for skip parameter
+
+1.092460 Thu Sep  3 17:26:23 2009
+ - using less magical load test (as kentnl reported)
+
+1.092370 Tue Aug 25 16:57:16 2009
+ - using plain File::Find which is core (rjbs)
+ - moving to autoversion: 1.yydddn
+
+**
+
+0.1.3 Tue Aug 11 15:58:19 CEST 2009
+ - automatically add File::Find::Rule to prereqs (fix #48602)
+
+0.1.2 Fri Aug  7 10:26:31 2009
+ - skip script tests if test::script isn't installed
+
+0.1.1 Thu Aug  6 15:43:34 2009
+ - fix manifest
+
+0.1.0 Thu Aug  6 15:34:26 2009
+ - original release
+ - basic compilation tests
+
