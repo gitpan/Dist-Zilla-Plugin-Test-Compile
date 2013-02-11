@@ -1,3 +1,4 @@
+AUTHOR_PLEDGE
 Build.PL
 Changes
 LICENSE
@@ -14,9 +15,6 @@ t/000-report-versions-tiny.t
 t/compile-tests.t
 t/compile-tests/dist.ini
 t/compile-tests/lib/Foo.pm
-t/release-has-version.t
-t/release-kwalitee.t
-t/release-minimum-version.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t
 t/test-compile.t

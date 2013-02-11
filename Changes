@@ -1,5 +1,9 @@
 Revision history for Dist::Zilla::Plugin::CompileTests
 
+2.000     2013-02-11 13:52:18 Europe/Paris
+ - new bail_out_on_fail option (Karen Etheridge)
+ - dzil migrated to @Author::JQUELIN
+
 1.112820  2011-10-09 10:31:56 Europe/Paris
  - look for scripts in scripts/ too (chris weyl)
 

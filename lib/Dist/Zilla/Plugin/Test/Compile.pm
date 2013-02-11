@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '1.112820';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.000';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -22,9 +22,10 @@ with 'Dist::Zilla::Role::FileGatherer';
 
 # -- attributes
 
-has fake_home     => ( is=>'ro', predicate=>'has_fake_home' );
+has fake_home     => ( is=>'ro', isa=>'Bool', default=>0 );
 has skip          => ( is=>'ro', predicate=>'has_skip' ); # skiplist - a regex
-has needs_display => ( is=>'ro', predicate=>'has_needs_display' );
+has needs_display => ( is=>'ro', isa=>'Bool', default=>0 );
+has bail_out_on_fail => ( is=>'ro', isa=>'Bool', default=>0 );
 
 # -- public methods
 
@@ -36,13 +37,13 @@ sub gather_files {
         ? sprintf( 'return if $found =~ /%s/;', $self->skip )
         : '# nothing to skip';
 
-    my $home = ( $self->has_fake_home && $self->fake_home )
+    my $home = ( $self->fake_home )
         ? ''
         : '# no fake requested ##';
 
     # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
     my $needs_display = '';
-    if ( $self->has_needs_display && $self->needs_display ) {
+    if ( $self->needs_display ) {
         $needs_display = <<'CODE';
 BEGIN {
     if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
@@ -53,6 +54,10 @@ BEGIN {
 CODE
     }
 
+    my $bail_out = $self->bail_out_on_fail
+        ? 'BAIL_OUT("Compilation failures") if !Test::More->builder->is_passing;'
+        : '';
+
     require Dist::Zilla::File::InMemory;
 
     for my $file (qw( t/00-compile.t )){
@@ -60,6 +65,7 @@ CODE
         $content =~ s/COMPILETESTS_SKIP/$skip/g;
         $content =~ s/COMPILETESTS_FAKE_HOME/$home/;
         $content =~ s/COMPILETESTS_NEEDS_DISPLAY/$needs_display/;
+        $content =~ s/COMPILETESTS_BAIL_OUT_ON_FAIL/$bail_out/;
 
         $self->add_file( Dist::Zilla::File::InMemory->new(
             name => $file,
@@ -73,9 +79,6 @@ no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
 
-
-
-
 =pod
 
 =head1 NAME
@@ -84,7 +87,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 1.112820
+version 2.000
 
 =head1 SYNOPSIS
 
@@ -94,6 +97,7 @@ In your dist.ini:
     skip      = Test$
     fake_home = 1
     needs_display = 1
+    bail_out_on_failure = 1
 
 =head1 DESCRIPTION
 
@@ -102,13 +106,13 @@ the following files:
 
 =over 4
 
-=item * t/00-compile.t - a standard test to check syntax of bundled modules
+=item * F<t/00-compile.t> - a standard test to check syntax of bundled modules
 
 This test will find all modules and scripts in your dist, and try to
 compile them one by one. This means it's a bit slower than loading them
 all at once, but it will catch more errors.
 
-We currently only check bin/, script/ and scripts/ for scripts.
+We currently only check F<bin/>, F<script/> and F<scripts/> for scripts.
 
 =back
 
@@ -120,13 +124,16 @@ This plugin accepts the following options:
 match is done against the module name (C<Foo::Bar>), not the file path
 (F<lib/Foo/Bar.pm>).
 
-=item * fake_home: a boolean to indicate whether to fake $ENV{HOME}.
+=item * fake_home: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
 This may be needed if your module unilateraly creates stuff in homedir:
 indeed, some cpantesters will smoke test your dist with a read-only home
 directory. Default to false.
 
 =item * needs_display: a boolean to indicate whether to skip the compile test
-on non-win32 systems when $ENV{DISPLAY} is not set. Default to false.
+on non-Win32 systems when C<< $ENV{DISPLAY} >> is not set. Default to false.
+
+=item * bail_out_on_fail: a boolean to indicate whether the test will BAIL_OUT
+of all subsequent tests when compilation failures are encountered. Defaults to false.
 
 =back
 
@@ -170,7 +177,6 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
 
 __DATA__
 ___[ t/00-compile.t ]___
@@ -246,4 +252,5 @@ $plan ? (plan tests => $plan) : (plan skip_all => "no tests to run");
             script_compiles( $file, "$script script compiles" );
         }
     }
+    COMPILETESTS_BAIL_OUT_ON_FAIL
 }
