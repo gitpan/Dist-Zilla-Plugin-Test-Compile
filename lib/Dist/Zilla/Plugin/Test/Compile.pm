@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.000';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.001';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -66,6 +66,7 @@ CODE
         $content =~ s/COMPILETESTS_FAKE_HOME/$home/;
         $content =~ s/COMPILETESTS_NEEDS_DISPLAY/$needs_display/;
         $content =~ s/COMPILETESTS_BAIL_OUT_ON_FAIL/$bail_out/;
+        $content =~ s/ +$//gm;
 
         $self->add_file( Dist::Zilla::File::InMemory->new(
             name => $file,
@@ -87,7 +88,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.000
+version 2.001
 
 =head1 SYNOPSIS
 
@@ -97,7 +98,7 @@ In your dist.ini:
     skip      = Test$
     fake_home = 1
     needs_display = 1
-    bail_out_on_failure = 1
+    bail_out_on_fail = 1
 
 =head1 DESCRIPTION
 
