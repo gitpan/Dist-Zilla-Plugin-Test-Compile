@@ -4,7 +4,7 @@
       "Jerome Quelin"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.130880",
    "license" : [
       "perl_5"
    ],
@@ -46,6 +46,7 @@
       },
       "test" : {
          "requires" : {
+            "Cwd" : "0",
             "Dist::Zilla::Tester" : "0",
             "File::Find" : "0",
             "File::Temp" : "0",
@@ -57,11 +58,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.001"
+         "version" : "2.002"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.001"
+         "version" : "2.002"
       }
    },
    "release_status" : "stable",
@@ -73,46 +74,46 @@
       "homepage" : "http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/jquelin/dist-zilla-plugin-test-compile.git",
-         "web" : "https://github.com/jquelin/dist-zilla-plugin-test-compile"
+         "url" : "git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git",
+         "web" : "https://github.com/karenetheridge/dist-zilla-plugin-test-compile"
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.001",
+   "version" : "2.002",
    "x_Dist_Zilla" : {
       "perl" : {
-         "version" : "5.016002"
+         "version" : "5.016003"
       },
       "plugins" : [
          {
             "class" : "Dist::Zilla::Plugin::MetaResources",
             "name" : "MetaResources",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::NextVersion",
             "name" : "@Author::JQUELIN/Git::NextVersion",
-            "version" : "2.006"
+            "version" : "2.013"
          },
          {
             "class" : "Dist::Zilla::Plugin::GatherDir",
             "name" : "@Author::JQUELIN/GatherDir",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::JQUELIN/Test::Compile",
-            "version" : "1.112820"
+            "version" : "2.001"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
             "name" : "@Author::JQUELIN/PodCoverageTests",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodSyntaxTests",
             "name" : "@Author::JQUELIN/PodSyntaxTests",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::ReportVersions::Tiny",
@@ -122,37 +123,37 @@
          {
             "class" : "Dist::Zilla::Plugin::PruneCruft",
             "name" : "@Author::JQUELIN/PruneCruft",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::PruneFiles",
             "name" : "@Author::JQUELIN/PruneFiles",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::ManifestSkip",
             "name" : "@Author::JQUELIN/ManifestSkip",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::AutoPrereqs",
             "name" : "@Author::JQUELIN/AutoPrereqs",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::ExtraTests",
             "name" : "@Author::JQUELIN/ExtraTests",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::NextRelease",
             "name" : "@Author::JQUELIN/NextRelease",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::PkgVersion",
             "name" : "@Author::JQUELIN/PkgVersion",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodWeaver",
@@ -167,12 +168,12 @@
          {
             "class" : "Dist::Zilla::Plugin::ExecDir",
             "name" : "@Author::JQUELIN/ExecDir",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::ShareDir",
             "name" : "@Author::JQUELIN/ShareDir",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Bugtracker",
@@ -192,12 +193,12 @@
          {
             "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
             "name" : "@Author::JQUELIN/MetaProvides::Package",
-            "version" : "1.14000001"
+            "version" : "1.14000002"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaConfig",
             "name" : "@Author::JQUELIN/MetaConfig",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::HelpWanted",
@@ -207,7 +208,7 @@
          {
             "class" : "Dist::Zilla::Plugin::License",
             "name" : "@Author::JQUELIN/License",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Covenant",
@@ -217,22 +218,22 @@
          {
             "class" : "Dist::Zilla::Plugin::MetaYAML",
             "name" : "@Author::JQUELIN/MetaYAML",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaJSON",
             "name" : "@Author::JQUELIN/MetaJSON",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::ModuleBuild",
             "name" : "@Author::JQUELIN/ModuleBuild",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Readme",
             "name" : "@Author::JQUELIN/Readme",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::ReadmeAnyFromPod",
@@ -242,7 +243,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Manifest",
             "name" : "@Author::JQUELIN/Manifest",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckChangeLog",
@@ -252,32 +253,32 @@
          {
             "class" : "Dist::Zilla::Plugin::TestRelease",
             "name" : "@Author::JQUELIN/TestRelease",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Check",
             "name" : "@Author::JQUELIN/Git::Check",
-            "version" : "2.006"
+            "version" : "2.013"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Commit",
             "name" : "@Author::JQUELIN/Git::Commit",
-            "version" : "2.006"
+            "version" : "2.013"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Tag",
             "name" : "@Author::JQUELIN/Git::Tag",
-            "version" : "2.006"
+            "version" : "2.013"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Push",
             "name" : "@Author::JQUELIN/Git::Push",
-            "version" : "2.006"
+            "version" : "2.013"
          },
          {
             "class" : "Dist::Zilla::Plugin::UploadToCPAN",
             "name" : "@Author::JQUELIN/UploadToCPAN",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::EOL",
@@ -287,32 +288,32 @@
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":InstallModules",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":IncModules",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":TestFiles",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":ExecFiles",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":ShareFiles",
-            "version" : "4.300028"
+            "version" : "4.300034"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
             "name" : ":MainModule",
-            "version" : "4.300028"
+            "version" : "4.300034"
          }
       ],
       "zilla" : {
@@ -320,7 +321,7 @@
          "config" : {
             "is_trial" : "0"
          },
-         "version" : "4.300028"
+         "version" : "4.300034"
       }
    },
    "x_author_pledge" : {
