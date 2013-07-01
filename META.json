@@ -63,11 +63,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.003"
+         "version" : "2.004"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.003"
+         "version" : "2.004"
       }
    },
    "release_status" : "testing",
@@ -84,7 +84,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.003",
+   "version" : "2.004",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
