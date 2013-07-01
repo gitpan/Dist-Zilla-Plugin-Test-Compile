@@ -3,6 +3,7 @@ Build.PL
 Changes
 LICENSE
 MANIFEST
+MANIFEST.SKIP
 META.json
 META.yml
 README
@@ -15,6 +16,7 @@ t/000-report-versions-tiny.t
 t/author-test-eol.t
 t/compile-tests.t
 t/compile-tests/dist.ini
+t/compile-tests/lib/Bar.pm
 t/compile-tests/lib/Foo.pm
 t/release-pod-coverage.t
 t/release-pod-syntax.t

@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
 {
-  $Dist::Zilla::Plugin::CompileTests::VERSION = '2.002';
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '2.003'; # TRIAL
 }
 # ABSTRACT: (DEPRECATED) common tests to check syntax of your modules
 
@@ -39,7 +39,7 @@ Dist::Zilla::Plugin::CompileTests - (DEPRECATED) common tests to check syntax of
 
 =head1 VERSION
 
-version 2.002
+version 2.003
 
 =head1 SYNOPSIS
 
