@@ -48,6 +48,7 @@ sub pmver {
     return sprintf('%-45s => %-10s%-15s%s', $module, $pmver, $wanted, "\n");
 }
 
+eval { $v .= pmver('Capture::Tiny','any version') };
 eval { $v .= pmver('Cwd','any version') };
 eval { $v .= pmver('Data::Section','any version') };
 eval { $v .= pmver('Dist::Zilla::File::InMemory','any version') };

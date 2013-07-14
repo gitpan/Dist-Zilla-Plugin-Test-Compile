@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.004'; # TRIAL
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.005'; # TRIAL
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -68,12 +68,14 @@ CODE
         if $self->fail_on_warning eq 'author';
 
     my $test_more_version = $self->bail_out_on_fail ? ' 0.94' : ' 0.88';
+    my $plugin_version = $self->VERSION;
 
     require Dist::Zilla::File::InMemory;
 
     for my $file (qw( t/00-compile.t )){
         my $content = ${$self->section_data($file)};
         $content =~ s/COMPILETESTS_TESTMORE_VERSION/$test_more_version/g;
+        $content =~ s/PLUGIN_VERSION/$plugin_version/g;
         $content =~ s/COMPILETESTS_SKIP/$skip/g;
         $content =~ s/COMPILETESTS_FAKE_HOME/$home/;
         $content =~ s/COMPILETESTS_NEEDS_DISPLAY/$needs_display/;
@@ -95,13 +97,19 @@ __PACKAGE__->meta->make_immutable;
 
 =pod
 
+=encoding utf-8
+
+=for :stopwords Jerome Quelin Ahmad Luehrs Karen Etheridge Kent Fredric Marcel Gruenauer
+Olivier Mengué Randy M. Stauner Ricardo SIGNES fayland Zawawi Chris Weyl
+Harley Pig Jesse
+
 =head1 NAME
 
 Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your modules
 
 =head1 VERSION
 
-version 2.004
+version 2.005
 
 =head1 SYNOPSIS
 
@@ -207,14 +215,68 @@ This software is copyright (c) 2009 by Jerome Quelin.
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item *
+
+Ahmad M. Zawawi <azawawi@ubuntu.(none)>
+
+=item *
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=item *
+
+Harley Pig <harleypig@gmail.com>
+
+=item *
+
+Jerome Quelin <jquelin@gmail.com>
+
+=item *
+
+Jesse Luehrs <doy@tozt.net>
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=item *
+
+Kent Fredric <kentfredric@gmail.com>
+
+=item *
+
+Marcel Gruenauer <hanekomu@gmail.com>
+
+=item *
+
+Olivier Mengué <dolmen@cpan.org>
+
+=item *
+
+Randy Stauner <randy@magnificent-tears.com>
+
+=item *
+
+Ricardo SIGNES <rjbs@cpan.org>
+
+=item *
+
+fayland <fayland@gmail.com>
+
+=back
+
 =cut
 
 __DATA__
 ___[ t/00-compile.t ]___
-#!perl
-
 use strict;
 use warnings;
+
+# This test was generated via Dist::Zilla::Plugin::Test::Compile PLUGIN_VERSION
 
 use Test::MoreCOMPILETESTS_TESTMORE_VERSION;
 
@@ -273,7 +335,7 @@ do { push @scripts, _find_scripts($_) if -d $_ }
     for my $module (sort @modules)
     {
         my ($stdout, $stderr, $exit) = capture {
-            system($^X, '-Ilib', '-e', qq{require $module; print "$module ok"});
+            system($^X, '-Ilib', '-e', qq{require $module; print qq[$module ok]});
         };
         like($stdout, qr/^\s*$module ok/s, "$module loaded ok" );
         warn $stderr if $stderr;

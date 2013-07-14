@@ -17,7 +17,7 @@ my %module_build_args = (
     "Jerome Quelin"
   ],
   "dist_name" => "Dist-Zilla-Plugin-Test-Compile",
-  "dist_version" => "2.004",
+  "dist_version" => "2.005",
   "license" => "perl",
   "module_name" => "Dist::Zilla::Plugin::Test::Compile",
   "recommends" => {
@@ -37,6 +37,7 @@ my %module_build_args = (
   },
   "script_files" => [],
   "test_requires" => {
+    "Capture::Tiny" => 0,
     "Cwd" => 0,
     "Dist::Zilla::Tester" => 0,
     "File::Find" => 0,

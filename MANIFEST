@@ -24,3 +24,4 @@ t/test-compile.t
 t/test-compile/bin/foobar
 t/test-compile/dist.ini
 t/test-compile/lib/Foo.pm
+weaver.ini

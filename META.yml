@@ -3,6 +3,7 @@ abstract: 'common tests to check syntax of your modules'
 author:
   - 'Jerome Quelin'
 build_requires:
+  Capture::Tiny: 0
   Cwd: 0
   Dist::Zilla::Tester: 0
   File::Find: 0
@@ -22,10 +23,10 @@ name: Dist-Zilla-Plugin-Test-Compile
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.004
+    version: 2.005
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.004
+    version: 2.005
 recommends:
   Test::Script: 1.05
 requires:
@@ -43,7 +44,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.004
+version: 2.005
 x_Dist_Zilla:
   perl:
     version: 5.019001
@@ -63,7 +64,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Compile
       name: '@Author::JQUELIN/Test::Compile'
-      version: 2.002
+      version: 2.004
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Author::JQUELIN/PodCoverageTests'
@@ -225,6 +226,10 @@ x_Dist_Zilla:
       name: DevelopRequires
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::ContributorsFromGit
+      name: ContributorsFromGit
+      version: 0.006
+    -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
       version: 4.300035
@@ -255,3 +260,16 @@ x_Dist_Zilla:
     version: 4.300035
 x_author_pledge:
   version: 1
+x_contributors:
+  - 'Ahmad M. Zawawi <azawawi@ubuntu.(none)>'
+  - 'Chris Weyl <cweyl@alumni.drew.edu>'
+  - 'Harley Pig <harleypig@gmail.com>'
+  - 'Jerome Quelin <jquelin@gmail.com>'
+  - 'Jesse Luehrs <doy@tozt.net>'
+  - 'Karen Etheridge <ether@cpan.org>'
+  - 'Kent Fredric <kentfredric@gmail.com>'
+  - 'Marcel Gruenauer <hanekomu@gmail.com>'
+  - 'Olivier Mengué <dolmen@cpan.org>'
+  - 'Randy Stauner <randy@magnificent-tears.com>'
+  - 'Ricardo SIGNES <rjbs@cpan.org>'
+  - 'fayland <fayland@gmail.com>'
