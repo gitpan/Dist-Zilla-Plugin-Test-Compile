@@ -12,13 +12,26 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.005'; # TRIAL
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.006'; # TRIAL
 }
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
 use Data::Section -setup;
-with 'Dist::Zilla::Role::FileGatherer';
+with (
+    'Dist::Zilla::Role::FileGatherer',
+    'Dist::Zilla::Role::FileFinderUser' => {
+        method          => 'found_module_files',
+        finder_arg_names => [ 'module_finder' ],
+        default_finders => [ ':InstallModules' ],
+    },
+    'Dist::Zilla::Role::FileFinderUser' => {
+        method          => 'found_script_files',
+        finder_arg_names => [ 'script_finder' ],
+        default_finders => [ ':ExecFiles' ],
+    },
+    'Dist::Zilla::Role::PrereqSource',
+);
 
 use Moose::Util::TypeConstraints;
 
@@ -30,19 +43,46 @@ has needs_display => ( is=>'ro', isa=>'Bool', default=>0 );
 has fail_on_warning => ( is=>'ro', isa=>enum([qw(none author all)]), default=>'author' );
 has bail_out_on_fail => ( is=>'ro', isa=>'Bool', default=>0 );
 
+has _test_more_version => (
+    is => 'ro', isa => 'Str',
+    init_arg => undef,
+    lazy => 1,
+    default => sub { shift->bail_out_on_fail ? '0.94' : '0.88' },
+);
+
 # -- public methods
+
+sub register_prereqs
+{
+    my $self = shift;
+    $self->zilla->register_prereqs(
+        {
+            type  => 'requires',
+            phase => 'test',
+        },
+        'Test::More' => $self->_test_more_version,
+        $self->fake_home ? ( 'File::Temp' => '0' ) : (),
+    );
+}
 
 sub gather_files {
 
     my ( $self , ) = @_;
 
     my $skip = ( $self->has_skip && $self->skip )
-        ? sprintf( 'return if $found =~ /%s/;', $self->skip )
+        ? sprintf( join("\n",
+                    '(my $module = $found) =~ s{^lib/}{};',
+                    '$module=~ s{[/\\]}{::}g;',
+                    '$module=~ s/\.pm$//;',
+                    'return if $module=~ /%s/;', $self->skip) )
         : '# nothing to skip';
 
     my $home = ( $self->fake_home )
-        ? ''
-        : '# no fake requested ##';
+        ? join("\n", '# fake home for cpan-testers',
+                     'require File::Temp;',
+                     'local $ENV{HOME} = File::Temp::tempdir( CLEANUP => 1 );',
+              )
+        : '# no fake home requested';
 
     # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
     my $needs_display = '';
@@ -67,15 +107,21 @@ CODE
     $fail_on_warning = 'if ($ENV{AUTHOR_TESTING}) { ' . $fail_on_warning . ' }'
         if $self->fail_on_warning eq 'author';
 
-    my $test_more_version = $self->bail_out_on_fail ? ' 0.94' : ' 0.88';
+    my $test_more_version = $self->_test_more_version;
     my $plugin_version = $self->VERSION;
+
+    my $module_files = join("\n", map { $_->name } @{$self->found_module_files} );
+    my $script_files = join("\n", map { $_->name } @{$self->found_script_files} );
 
     require Dist::Zilla::File::InMemory;
 
+    # TODO: we could instead use the TextTemplate role to munge this.
     for my $file (qw( t/00-compile.t )){
         my $content = ${$self->section_data($file)};
         $content =~ s/COMPILETESTS_TESTMORE_VERSION/$test_more_version/g;
         $content =~ s/PLUGIN_VERSION/$plugin_version/g;
+        $content =~ s/COMPILETESTS_MODULE_FILES/$module_files/g;
+        $content =~ s/COMPILETESTS_SCRIPT_FILES/$script_files/g;
         $content =~ s/COMPILETESTS_SKIP/$skip/g;
         $content =~ s/COMPILETESTS_FAKE_HOME/$home/;
         $content =~ s/COMPILETESTS_NEEDS_DISPLAY/$needs_display/;
@@ -89,7 +135,6 @@ CODE
         ));
     }
 }
-
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
@@ -109,7 +154,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.005
+version 2.006
 
 =head1 SYNOPSIS
 
@@ -169,6 +214,23 @@ warnings during compilation checks. Possible values are:
 installation of modules when upstream dependencies exhibit warnings in a new
 Perl release)
 
+=item * module_finder
+
+This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
+modules to check.  The default value is C<:InstallModules>; this option can be
+used more than once.
+
+Other pre-defined finders are listed in
+L<FileFinder|Dist::Zilla::Role::FileFinderUser/default_finders>.
+You can define your own with the
+L<Dist::Zilla::Plugin::FileFinder::ByName|[FileFinder::ByName]> plugin.
+
+=item * script_finder
+
+Just like C<module_finder>, but for finding scripts.  The default value is
+C<:ExecFiles> (you can use the L<Dist::Zilla::Plugin::ExecDir> plugin to mark
+those files as executables).
+
 =back
 
 =item * bail_out_on_fail: a boolean to indicate whether the test will BAIL_OUT
@@ -176,7 +238,8 @@ of all subsequent tests when compilation failures are encountered. Defaults to f
 
 =back
 
-=for Pod::Coverage::TrustPod gather_files
+=for Pod::Coverage::TrustPod register_prereqs
+    gather_files
 
 =head1 SEE ALSO
 
@@ -278,72 +341,38 @@ use warnings;
 
 # This test was generated via Dist::Zilla::Plugin::Test::Compile PLUGIN_VERSION
 
-use Test::MoreCOMPILETESTS_TESTMORE_VERSION;
+use Test::More COMPILETESTS_TESTMORE_VERSION;
 
 COMPILETESTS_NEEDS_DISPLAY
 
-use File::Find;
 use File::Temp qw{ tempdir };
 use Capture::Tiny qw{ capture };
 
-my @modules;
-find(
-  sub {
-    return if $File::Find::name !~ /\.pm\z/;
-    my $found = $File::Find::name;
-    $found =~ s{^lib/}{};
-    $found =~ s{[/\\]}{::}g;
-    $found =~ s/\.pm$//;
-    COMPILETESTS_SKIP
-    push @modules, $found;
-  },
-  'lib',
+my @module_files = qw(
+COMPILETESTS_MODULE_FILES
 );
 
-sub _find_scripts {
-    my $dir = shift @_;
-
-    my @found_scripts = ();
-    find(
-      sub {
-        return unless -f;
-        my $found = $File::Find::name;
-        COMPILETESTS_SKIP
-        open my $FH, '<', $_ or do {
-          note( "Unable to open $found in ( $! ), skipping" );
-          return;
-        };
-        my $shebang = <$FH>;
-        return unless $shebang =~ /^#!.*?\bperl\b\s*$/;
-        push @found_scripts, $found;
-      },
-      $dir,
-    );
-
-    return @found_scripts;
-}
-
-my @scripts;
-do { push @scripts, _find_scripts($_) if -d $_ }
-    for qw{ bin script scripts };
+my @scripts = qw(
+COMPILETESTS_SCRIPT_FILES
+);
 
 {
-    # fake home for cpan-testers
-    COMPILETESTS_FAKE_HOME local $ENV{HOME} = tempdir( CLEANUP => 1 );
+    COMPILETESTS_FAKE_HOME
 
     my @warnings;
-    for my $module (sort @modules)
+    for my $lib (sort @module_files)
     {
         my ($stdout, $stderr, $exit) = capture {
-            system($^X, '-Ilib', '-e', qq{require $module; print qq[$module ok]});
+            system($^X, '-Ilib', '-e', qq{require qq[$lib]});
         };
-        like($stdout, qr/^\s*$module ok/s, "$module loaded ok" );
+        is($?, 0, "$lib loaded ok");
         warn $stderr if $stderr;
         push @warnings, $stderr if $stderr;
     }
 
     COMPILETESTS_FAIL_ON_WARNING
 
+if (@scripts) {
     SKIP: {
         eval "use Test::Script 1.05; 1;";
         skip "Test::Script needed to test script compilation", scalar(@scripts) if $@;
@@ -353,6 +382,8 @@ do { push @scripts, _find_scripts($_) if -d $_ }
             script_compiles( $file, "$script script compiles" );
         }
     }
+}
+
     COMPILETESTS_BAIL_OUT_ON_FAIL
 }
 

@@ -3,7 +3,6 @@ abstract: 'common tests to check syntax of your modules'
 author:
   - 'Jerome Quelin'
 build_requires:
-  Capture::Tiny: 0
   Cwd: 0
   Dist::Zilla::Tester: 0
   File::Find: 0
@@ -23,16 +22,18 @@ name: Dist-Zilla-Plugin-Test-Compile
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.005
+    version: 2.006
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.005
+    version: 2.006
 recommends:
   Test::Script: 1.05
 requires:
   Data::Section: 0
   Dist::Zilla::File::InMemory: 0
+  Dist::Zilla::Role::FileFinderUser: 0
   Dist::Zilla::Role::FileGatherer: 0
+  Dist::Zilla::Role::PrereqSource: 0
   Moose: 0
   Moose::Util::TypeConstraints: 0
   namespace::autoclean: 0
@@ -44,7 +45,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.005
+version: 2.006
 x_Dist_Zilla:
   perl:
     version: 5.019001
@@ -64,7 +65,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Compile
       name: '@Author::JQUELIN/Test::Compile'
-      version: 2.004
+      version: 2.002
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Author::JQUELIN/PodCoverageTests'
@@ -136,7 +137,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MetaProvides::Package
       name: '@Author::JQUELIN/MetaProvides::Package'
-      version: 1.14000002
+      version: 1.14000003
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Author::JQUELIN/MetaConfig'
@@ -229,6 +230,14 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::ContributorsFromGit
       name: ContributorsFromGit
       version: 0.006
+    -
+      class: Dist::Zilla::Plugin::ConfirmRelease
+      name: ConfirmRelease
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::InstallRelease
+      name: InstallRelease
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'

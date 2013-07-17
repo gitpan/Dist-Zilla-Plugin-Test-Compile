@@ -17,7 +17,7 @@ my %module_build_args = (
     "Jerome Quelin"
   ],
   "dist_name" => "Dist-Zilla-Plugin-Test-Compile",
-  "dist_version" => "2.005",
+  "dist_version" => "2.006",
   "license" => "perl",
   "module_name" => "Dist::Zilla::Plugin::Test::Compile",
   "recommends" => {
@@ -27,7 +27,9 @@ my %module_build_args = (
   "requires" => {
     "Data::Section" => 0,
     "Dist::Zilla::File::InMemory" => 0,
+    "Dist::Zilla::Role::FileFinderUser" => 0,
     "Dist::Zilla::Role::FileGatherer" => 0,
+    "Dist::Zilla::Role::PrereqSource" => 0,
     "Moose" => 0,
     "Moose::Util::TypeConstraints" => 0,
     "namespace::autoclean" => 0,
@@ -37,7 +39,6 @@ my %module_build_args = (
   },
   "script_files" => [],
   "test_requires" => {
-    "Capture::Tiny" => 0,
     "Cwd" => 0,
     "Dist::Zilla::Tester" => 0,
     "File::Find" => 0,
