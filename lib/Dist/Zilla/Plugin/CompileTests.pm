@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::CompileTests;
 {
-  $Dist::Zilla::Plugin::CompileTests::VERSION = '2.008'; # TRIAL
+  $Dist::Zilla::Plugin::CompileTests::VERSION = '2.009'; # TRIAL
 }
 # ABSTRACT: (DEPRECATED) common tests to check syntax of your modules
 
@@ -35,7 +35,9 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Jerome Quelin
+=for :stopwords Jerome Quelin Ahmad Luehrs Karen Etheridge Kent Fredric Marcel Gruenauer
+Olivier Mengué Randy M. Stauner Ricardo SIGNES fayland Zawawi Chris Weyl
+Harley Pig Jesse
 
 =head1 NAME
 
@@ -43,7 +45,7 @@ Dist::Zilla::Plugin::CompileTests - (DEPRECATED) common tests to check syntax of
 
 =head1 VERSION
 
-version 2.008
+version 2.009
 
 =head1 SYNOPSIS
 

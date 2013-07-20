@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.008'; # TRIAL
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.009'; # TRIAL
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -20,6 +20,7 @@ use Moose;
 use Data::Section -setup;
 with (
     'Dist::Zilla::Role::FileGatherer',
+    'Dist::Zilla::Role::TextTemplate',
     'Dist::Zilla::Role::FileFinderUser' => {
         method          => 'found_module_files',
         finder_arg_names => [ 'module_finder' ],
@@ -38,10 +39,19 @@ use Moose::Util::TypeConstraints;
 # -- attributes
 
 has fake_home     => ( is=>'ro', isa=>'Bool', default=>0 );
-has skip          => ( is=>'ro', predicate=>'has_skip' ); # skiplist - a regex
 has needs_display => ( is=>'ro', isa=>'Bool', default=>0 );
 has fail_on_warning => ( is=>'ro', isa=>enum([qw(none author all)]), default=>'author' );
 has bail_out_on_fail => ( is=>'ro', isa=>'Bool', default=>0 );
+
+sub mvp_multivalue_args { qw(skips) }
+sub mvp_aliases { return { skip => 'skips' } }
+
+has skips => (
+    isa => 'ArrayRef[Str]',
+    traits => ['Array'],
+    handles => { skips => 'elements' },
+    default => sub { [] },
+);
 
 has _test_more_version => (
     is => 'ro', isa => 'Str',
@@ -76,6 +86,7 @@ sub register_prereqs
             phase => 'test',
         },
         'Test::More' => $self->_test_more_version,
+        'Capture::Tiny' => '0',
         $self->fake_home ? ( 'File::Temp' => '0' ) : (),
         $self->_script_filenames ? ( 'Test::Script' => '1.05' ) : (),
     );
@@ -85,66 +96,34 @@ sub gather_files {
 
     my ( $self , ) = @_;
 
+    my @skips = map {; qr/$_/ } $self->skips;
+
     my @module_filenames = $self->_module_filenames;
     @module_filenames = grep {
         (my $module = $_) =~ s{^lib/}{};
         $module=~ s{[/\\]}{::}g;
         $module=~ s/\.pm$//;
-        my $skip = $self->skip;
-        $module !~ m/$skip/
-    } @module_filenames if $self->skip;
+        not grep { $module =~ $_ } @skips
+    } @module_filenames if @skips;
 
-    my $module_files = join("\n", @module_filenames);
-    my $script_files = join("\n", $self->_script_filenames);
-
-    my $home = ( $self->fake_home )
-        ? join("\n", '# fake home for cpan-testers',
-                     'require File::Temp;',
-                     'local $ENV{HOME} = File::Temp::tempdir( CLEANUP => 1 );',
-              )
-        : '# no fake home requested';
-
-    # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
-    my $needs_display = '';
-    if ( $self->needs_display ) {
-        $needs_display = <<'CODE';
-BEGIN {
-    if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
-        plan skip_all => 'Needs DISPLAY';
-        exit 0;
-    }
-}
-CODE
-    }
-
-    my $bail_out = $self->bail_out_on_fail
-        ? 'BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;'
-        : '';
-
-    my $fail_on_warning = $self->fail_on_warning ne 'none'
-        ? q{is(scalar(@warnings), 0, 'no warnings found');}
-        : '';
-    $fail_on_warning = 'if ($ENV{AUTHOR_TESTING}) { ' . $fail_on_warning . ' }'
-        if $self->fail_on_warning eq 'author';
-
-    my $test_more_version = $self->_test_more_version;
-    my $plugin_version = $self->VERSION;
-
+    my @script_filenames = $self->_script_filenames;
 
     require Dist::Zilla::File::InMemory;
 
-    # TODO: we could instead use the TextTemplate role to munge this.
     for my $file (qw( t/00-compile.t )){
-        my $content = ${$self->section_data($file)};
-        $content =~ s/COMPILETESTS_TESTMORE_VERSION/$test_more_version/g;
-        $content =~ s/PLUGIN_VERSION/$plugin_version/g;
-        $content =~ s/COMPILETESTS_MODULE_FILES/$module_files/g;
-        $content =~ s/COMPILETESTS_SCRIPT_FILES/$script_files/g;
-        $content =~ s/COMPILETESTS_FAKE_HOME/$home/;
-        $content =~ s/COMPILETESTS_NEEDS_DISPLAY/$needs_display/;
-        $content =~ s/COMPILETESTS_BAIL_OUT_ON_FAIL/$bail_out/;
-        $content =~ s/COMPILETESTS_FAIL_ON_WARNING/$fail_on_warning/;
-        $content =~ s/ +$//gm;
+        my $content = $self->fill_in_string(
+            ${$self->section_data($file)},
+            {
+                plugin_version => \($self->VERSION),
+                test_more_version => \($self->_test_more_version),
+                module_filenames => \@module_filenames,
+                script_filenames => \@script_filenames,
+                fake_home => \($self->fake_home),
+                needs_display => \($self->needs_display),
+                bail_out_on_fail => \($self->bail_out_on_fail),
+                fail_on_warning => \($self->fail_on_warning),
+            }
+        );
 
         $self->add_file( Dist::Zilla::File::InMemory->new(
             name => $file,
@@ -171,7 +150,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.008
+version 2.009
 
 =head1 SYNOPSIS
 
@@ -207,7 +186,7 @@ This plugin accepts the following options:
 
 =item * skip: a regex to skip compile test for modules matching it. The
 match is done against the module name (C<Foo::Bar>), not the file path
-(F<lib/Foo/Bar.pm>).
+(F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
 
 =item * fake_home: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
 This may be needed if your module unilateraly creates stuff in homedir:
@@ -255,7 +234,9 @@ of all subsequent tests when compilation failures are encountered. Defaults to f
 
 =back
 
-=for Pod::Coverage::TrustPod register_prereqs
+=for Pod::Coverage::TrustPod mvp_multivalue_args
+    mvp_aliases
+    register_prereqs
     gather_files
 
 =head1 SEE ALSO
@@ -356,50 +337,79 @@ ___[ t/00-compile.t ]___
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile PLUGIN_VERSION
+# This test was generated via Dist::Zilla::Plugin::Test::Compile {{ $plugin_version }}
 
-use Test::More COMPILETESTS_TESTMORE_VERSION;
+use Test::More {{ $test_more_version }};
 
-COMPILETESTS_NEEDS_DISPLAY
+{{
+$needs_display
+    ? <<'CODE'
+BEGIN {
+    # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
+    if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
+        plan skip_all => 'Needs DISPLAY';
+        exit 0;
+    }
+}
+CODE
+    : ''
+}}
 
-use File::Temp qw{ tempdir };
 use Capture::Tiny qw{ capture };
 
 my @module_files = qw(
-COMPILETESTS_MODULE_FILES
+{{ join("\n", @module_filenames) }}
 );
 
 my @scripts = qw(
-COMPILETESTS_SCRIPT_FILES
+{{ join("\n", @script_filenames) }}
 );
 
+{{
+$fake_home
+    ? <<'CODE'
+# fake home for cpan-testers
+use File::Temp;
+local $ENV{HOME} = File::Temp::tempdir( CLEANUP => 1 );
+CODE
+    : '# no fake home requested';
+}}
+
+my @warnings;
+for my $lib (sort @module_files)
 {
-    COMPILETESTS_FAKE_HOME
-
-    my @warnings;
-    for my $lib (sort @module_files)
-    {
-        my ($stdout, $stderr, $exit) = capture {
-            system($^X, '-Ilib', '-e', qq{require qq[$lib]});
-        };
-        is($?, 0, "$lib loaded ok");
-        warn $stderr if $stderr;
-        push @warnings, $stderr if $stderr;
-    }
-
-    COMPILETESTS_FAIL_ON_WARNING
-
-if (@scripts) {
-    require Test::Script;
-    Test::Script->VERSION('1.05');
-    foreach my $file ( @scripts ) {
-        my $script = $file;
-        $script =~ s!.*/!!;
-        Test::Script::script_compiles( $file, "$script script compiles" );
-    }
+    my ($stdout, $stderr, $exit) = capture {
+        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
+    };
+    is($?, 0, "$lib loaded ok");
+    warn $stderr if $stderr;
+    push @warnings, $stderr if $stderr;
 }
 
-    COMPILETESTS_BAIL_OUT_ON_FAIL
+{{
+my $str = $fail_on_warning ne 'none'
+    ? q{is(scalar(@warnings), 0, 'no warnings found');}
+    : '';
+$str = 'if ($ENV{AUTHOR_TESTING}) { ' . $str . ' }'
+    if $fail_on_warning eq 'author';
+$str
+}}
+
+{{
+@script_filenames
+    ? <<'CODE'
+use Test::Script 1.05;
+foreach my $file ( @scripts ) {
+    script_compiles( $file, "$file compiles" );
 }
+CODE
+    : '';
+}}
+
+{{
+$bail_out_on_fail
+    ? 'BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;'
+    : '';
+}}
 
 done_testing;

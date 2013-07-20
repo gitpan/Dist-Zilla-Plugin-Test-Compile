@@ -55,6 +55,7 @@ eval { $v .= pmver('Dist::Zilla::File::InMemory','any version') };
 eval { $v .= pmver('Dist::Zilla::Role::FileFinderUser','any version') };
 eval { $v .= pmver('Dist::Zilla::Role::FileGatherer','any version') };
 eval { $v .= pmver('Dist::Zilla::Role::PrereqSource','any version') };
+eval { $v .= pmver('Dist::Zilla::Role::TextTemplate','any version') };
 eval { $v .= pmver('Dist::Zilla::Tester','any version') };
 eval { $v .= pmver('File::Temp','any version') };
 eval { $v .= pmver('Module::Build::Tiny','0.025') };

@@ -34,6 +34,7 @@
             "Dist::Zilla::Role::FileFinderUser" : "0",
             "Dist::Zilla::Role::FileGatherer" : "0",
             "Dist::Zilla::Role::PrereqSource" : "0",
+            "Dist::Zilla::Role::TextTemplate" : "0",
             "Moose" : "0",
             "Moose::Util::TypeConstraints" : "0",
             "namespace::autoclean" : "0",
@@ -57,11 +58,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.008"
+         "version" : "2.009"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.008"
+         "version" : "2.009"
       }
    },
    "release_status" : "testing",
@@ -78,7 +79,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.008",
+   "version" : "2.009",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
@@ -102,7 +103,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Filter/Test::Compile",
-            "version" : "2.007"
+            "version" : "2.008"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
