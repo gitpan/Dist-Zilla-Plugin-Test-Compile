@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.006
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.007
 
 use Test::More 0.94;
 
@@ -36,14 +36,12 @@ my @scripts = qw(
     if ($ENV{AUTHOR_TESTING}) { is(scalar(@warnings), 0, 'no warnings found'); }
 
 if (@scripts) {
-    SKIP: {
-        eval "use Test::Script 1.05; 1;";
-        skip "Test::Script needed to test script compilation", scalar(@scripts) if $@;
-        foreach my $file ( @scripts ) {
-            my $script = $file;
-            $script =~ s!.*/!!;
-            script_compiles( $file, "$script script compiles" );
-        }
+    require Test::Script;
+    Test::Script->VERSION('1.05');
+    foreach my $file ( @scripts ) {
+        my $script = $file;
+        $script =~ s!.*/!!;
+        Test::Script::script_compiles( $file, "$script script compiles" );
     }
 }
 
