@@ -3,15 +3,14 @@ abstract: 'common tests to check syntax of your modules'
 author:
   - 'Jerome Quelin'
 build_requires:
+  Capture::Tiny: 0
   Cwd: 0
   Dist::Zilla::Tester: 0
-  File::Find: 0
   File::Temp: 0
-  Module::Build: 0.3601
   Path::Class: 0
   Test::More: 0.94
 configure_requires:
-  Module::Build: 0.3601
+  Module::Build::Tiny: 0.025
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
 license: perl
@@ -22,12 +21,10 @@ name: Dist-Zilla-Plugin-Test-Compile
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.006
+    version: 2.007
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.006
-recommends:
-  Test::Script: 1.05
+    version: 2.007
 requires:
   Data::Section: 0
   Dist::Zilla::File::InMemory: 0
@@ -45,7 +42,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.006
+version: 2.007
 x_Dist_Zilla:
   perl:
     version: 5.019001
@@ -56,176 +53,160 @@ x_Dist_Zilla:
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
-      name: '@Author::JQUELIN/Git::NextVersion'
+      name: '@Filter/Git::NextVersion'
       version: 2.014
     -
       class: Dist::Zilla::Plugin::GatherDir
-      name: '@Author::JQUELIN/GatherDir'
+      name: '@Filter/GatherDir'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Test::Compile
-      name: '@Author::JQUELIN/Test::Compile'
-      version: 2.002
+      name: '@Filter/Test::Compile'
+      version: 2.006
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
-      name: '@Author::JQUELIN/PodCoverageTests'
+      name: '@Filter/PodCoverageTests'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::PodSyntaxTests
-      name: '@Author::JQUELIN/PodSyntaxTests'
+      name: '@Filter/PodSyntaxTests'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::ReportVersions::Tiny
-      name: '@Author::JQUELIN/ReportVersions::Tiny'
+      name: '@Filter/ReportVersions::Tiny'
       version: 1.08
     -
       class: Dist::Zilla::Plugin::PruneCruft
-      name: '@Author::JQUELIN/PruneCruft'
+      name: '@Filter/PruneCruft'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::PruneFiles
-      name: '@Author::JQUELIN/PruneFiles'
+      name: '@Filter/PruneFiles'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::ManifestSkip
-      name: '@Author::JQUELIN/ManifestSkip'
+      name: '@Filter/ManifestSkip'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
-      name: '@Author::JQUELIN/AutoPrereqs'
+      name: '@Filter/AutoPrereqs'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::ExtraTests
-      name: '@Author::JQUELIN/ExtraTests'
+      name: '@Filter/ExtraTests'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::NextRelease
-      name: '@Author::JQUELIN/NextRelease'
+      name: '@Filter/NextRelease'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::PkgVersion
-      name: '@Author::JQUELIN/PkgVersion'
+      name: '@Filter/PkgVersion'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::PodWeaver
-      name: '@Author::JQUELIN/PodWeaver'
+      name: '@Filter/PodWeaver'
       version: 3.101641
     -
       class: Dist::Zilla::Plugin::Prepender
-      name: '@Author::JQUELIN/Prepender'
+      name: '@Filter/Prepender'
       version: 1.112280
     -
       class: Dist::Zilla::Plugin::ExecDir
-      name: '@Author::JQUELIN/ExecDir'
+      name: '@Filter/ExecDir'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::ShareDir
-      name: '@Author::JQUELIN/ShareDir'
+      name: '@Filter/ShareDir'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Bugtracker
-      name: '@Author::JQUELIN/Bugtracker'
+      name: '@Filter/Bugtracker'
       version: 1.111080
     -
       class: Dist::Zilla::Plugin::Homepage
-      name: '@Author::JQUELIN/Homepage'
+      name: '@Filter/Homepage'
       version: 1.101420
     -
       class: Dist::Zilla::Plugin::Repository
-      name: '@Author::JQUELIN/Repository'
+      name: '@Filter/Repository'
       version: 0.19
     -
       class: Dist::Zilla::Plugin::MetaProvides::Package
-      name: '@Author::JQUELIN/MetaProvides::Package'
+      name: '@Filter/MetaProvides::Package'
       version: 1.14000003
     -
       class: Dist::Zilla::Plugin::MetaConfig
-      name: '@Author::JQUELIN/MetaConfig'
+      name: '@Filter/MetaConfig'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::HelpWanted
-      name: '@Author::JQUELIN/HelpWanted'
+      name: '@Filter/HelpWanted'
       version: 0.2.1
     -
       class: Dist::Zilla::Plugin::License
-      name: '@Author::JQUELIN/License'
+      name: '@Filter/License'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Covenant
-      name: '@Author::JQUELIN/Covenant'
+      name: '@Filter/Covenant'
       version: 0.1.0
     -
       class: Dist::Zilla::Plugin::MetaYAML
-      name: '@Author::JQUELIN/MetaYAML'
+      name: '@Filter/MetaYAML'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::MetaJSON
-      name: '@Author::JQUELIN/MetaJSON'
-      version: 4.300035
-    -
-      class: Dist::Zilla::Plugin::ModuleBuild
-      name: '@Author::JQUELIN/ModuleBuild'
+      name: '@Filter/MetaJSON'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Readme
-      name: '@Author::JQUELIN/Readme'
+      name: '@Filter/Readme'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
-      name: '@Author::JQUELIN/ReadmeAnyFromPod'
+      name: '@Filter/ReadmeAnyFromPod'
       version: 0.131500
     -
       class: Dist::Zilla::Plugin::Manifest
-      name: '@Author::JQUELIN/Manifest'
+      name: '@Filter/Manifest'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::CheckChangeLog
-      name: '@Author::JQUELIN/CheckChangeLog'
+      name: '@Filter/CheckChangeLog'
       version: 0.01
     -
       class: Dist::Zilla::Plugin::TestRelease
-      name: '@Author::JQUELIN/TestRelease'
+      name: '@Filter/TestRelease'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Git::Check
-      name: '@Author::JQUELIN/Git::Check'
+      name: '@Filter/Git::Check'
       version: 2.014
     -
       class: Dist::Zilla::Plugin::Git::Commit
-      name: '@Author::JQUELIN/Git::Commit'
+      name: '@Filter/Git::Commit'
       version: 2.014
     -
       class: Dist::Zilla::Plugin::Git::Tag
-      name: '@Author::JQUELIN/Git::Tag'
+      name: '@Filter/Git::Tag'
       version: 2.014
     -
       class: Dist::Zilla::Plugin::Git::Push
-      name: '@Author::JQUELIN/Git::Push'
+      name: '@Filter/Git::Push'
       version: 2.014
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
-      name: '@Author::JQUELIN/UploadToCPAN'
+      name: '@Filter/UploadToCPAN'
       version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::ModuleBuildTiny
+      name: ModuleBuildTiny
+      version: 0.004
     -
       class: Dist::Zilla::Plugin::Test::EOL
       name: Test::EOL
       version: 0.07
-    -
-      class: Dist::Zilla::Plugin::Prereqs
-      config:
-        Dist::Zilla::Plugin::Prereqs:
-          phase: runtime
-          type: recommends
-      name: RuntimeRecommends
-      version: 4.300035
-    -
-      class: Dist::Zilla::Plugin::Prereqs
-      config:
-        Dist::Zilla::Plugin::Prereqs:
-          phase: develop
-          type: requires
-      name: DevelopRequires
-      version: 4.300035
     -
       class: Dist::Zilla::Plugin::ContributorsFromGit
       name: ContributorsFromGit

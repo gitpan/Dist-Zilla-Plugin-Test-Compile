@@ -48,6 +48,7 @@ sub pmver {
     return sprintf('%-45s => %-10s%-15s%s', $module, $pmver, $wanted, "\n");
 }
 
+eval { $v .= pmver('Capture::Tiny','any version') };
 eval { $v .= pmver('Cwd','any version') };
 eval { $v .= pmver('Data::Section','any version') };
 eval { $v .= pmver('Dist::Zilla::File::InMemory','any version') };
@@ -55,9 +56,8 @@ eval { $v .= pmver('Dist::Zilla::Role::FileFinderUser','any version') };
 eval { $v .= pmver('Dist::Zilla::Role::FileGatherer','any version') };
 eval { $v .= pmver('Dist::Zilla::Role::PrereqSource','any version') };
 eval { $v .= pmver('Dist::Zilla::Tester','any version') };
-eval { $v .= pmver('File::Find','any version') };
 eval { $v .= pmver('File::Temp','any version') };
-eval { $v .= pmver('Module::Build','0.3601') };
+eval { $v .= pmver('Module::Build::Tiny','0.025') };
 eval { $v .= pmver('Moose','any version') };
 eval { $v .= pmver('Moose::Util::TypeConstraints','any version') };
 eval { $v .= pmver('Path::Class','any version') };
@@ -65,7 +65,6 @@ eval { $v .= pmver('Pod::Coverage::TrustPod','any version') };
 eval { $v .= pmver('Test::More','0.94') };
 eval { $v .= pmver('Test::Pod','1.41') };
 eval { $v .= pmver('Test::Pod::Coverage','1.08') };
-eval { $v .= pmver('Test::Script','1.05') };
 eval { $v .= pmver('namespace::autoclean','any version') };
 eval { $v .= pmver('strict','any version') };
 eval { $v .= pmver('version','0.9901') };
