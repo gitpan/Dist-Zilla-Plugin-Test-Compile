@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.009'; # TRIAL
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.010';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -106,28 +106,24 @@ sub gather_files {
         not grep { $module =~ $_ } @skips
     } @module_filenames if @skips;
 
-    my @script_filenames = $self->_script_filenames;
-
     require Dist::Zilla::File::InMemory;
 
     for my $file (qw( t/00-compile.t )){
-        my $content = $self->fill_in_string(
-            ${$self->section_data($file)},
-            {
-                plugin_version => \($self->VERSION),
-                test_more_version => \($self->_test_more_version),
-                module_filenames => \@module_filenames,
-                script_filenames => \@script_filenames,
-                fake_home => \($self->fake_home),
-                needs_display => \($self->needs_display),
-                bail_out_on_fail => \($self->bail_out_on_fail),
-                fail_on_warning => \($self->fail_on_warning),
-            }
-        );
-
         $self->add_file( Dist::Zilla::File::InMemory->new(
             name => $file,
-            content => $content,
+            content => $self->fill_in_string(
+                ${$self->section_data($file)},
+                {
+                    plugin_version => \($self->VERSION),
+                    test_more_version => \($self->_test_more_version),
+                    module_filenames => \@module_filenames,
+                    script_filenames => [ $self->_script_filenames ],
+                    fake_home => \($self->fake_home),
+                    needs_display => \($self->needs_display),
+                    bail_out_on_fail => \($self->bail_out_on_fail),
+                    fail_on_warning => \($self->fail_on_warning),
+                }
+            ),
         ));
     }
 }
@@ -150,7 +146,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.009
+version 2.010
 
 =head1 SYNOPSIS
 
@@ -358,11 +354,11 @@ CODE
 use Capture::Tiny qw{ capture };
 
 my @module_files = qw(
-{{ join("\n", @module_filenames) }}
+{{ join("\n", sort @module_filenames) }}
 );
 
 my @scripts = qw(
-{{ join("\n", @script_filenames) }}
+{{ join("\n", sort @script_filenames) }}
 );
 
 {{
@@ -376,7 +372,7 @@ CODE
 }}
 
 my @warnings;
-for my $lib (sort @module_files)
+for my $lib (@module_files)
 {
     my ($stdout, $stderr, $exit) = capture {
         system($^X, '-Mblib', '-e', qq{require qq[$lib]});
@@ -387,12 +383,13 @@ for my $lib (sort @module_files)
 }
 
 {{
-my $str = $fail_on_warning ne 'none'
-    ? q{is(scalar(@warnings), 0, 'no warnings found');}
-    : '';
-$str = 'if ($ENV{AUTHOR_TESTING}) { ' . $str . ' }'
-    if $fail_on_warning eq 'author';
-$str
+($fail_on_warning ne 'none'
+    ? q{is(scalar(@warnings), 0, 'no warnings found')}
+    : '# no warning checks')
+.
+($fail_on_warning eq 'author'
+    ? ' if $ENV{AUTHOR_TESTING};'
+    : ';')
 }}
 
 {{

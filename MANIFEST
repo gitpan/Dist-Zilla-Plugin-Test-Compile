@@ -11,8 +11,9 @@ dist.ini
 examples/dist.ini
 lib/Dist/Zilla/Plugin/CompileTests.pm
 lib/Dist/Zilla/Plugin/Test/Compile.pm
+lib/Dist/Zilla/Plugin/Test/Compile/Conflicts.pm
+t/00-check-deps.t
 t/00-compile.t
-t/000-report-versions-tiny.t
 t/author-test-eol.t
 t/compile-tests.t
 t/compile-tests/dist.ini

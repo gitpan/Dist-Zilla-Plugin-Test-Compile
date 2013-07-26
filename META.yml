@@ -3,15 +3,18 @@ abstract: 'common tests to check syntax of your modules'
 author:
   - 'Jerome Quelin'
 build_requires:
-  Capture::Tiny: 0
   Cwd: 0
   Dist::Zilla::Tester: 0
+  File::Find: 0
   File::Temp: 0
   Path::Class: 0
+  Test::CheckDeps: 0.006
   Test::More: 0.94
-  Test::Script: 1.05
 configure_requires:
+  Dist::CheckConflicts: 0.02
   Module::Build::Tiny: 0.025
+conflicts:
+  Test::Kwalitee::Extra: '<= v0.0.8'
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
 license: perl
@@ -22,12 +25,13 @@ name: Dist-Zilla-Plugin-Test-Compile
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.009
+    version: 2.010
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.009
+    version: 2.010
 requires:
   Data::Section: 0
+  Dist::CheckConflicts: 0.02
   Dist::Zilla::File::InMemory: 0
   Dist::Zilla::Role::FileFinderUser: 0
   Dist::Zilla::Role::FileGatherer: 0
@@ -44,10 +48,10 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.009
+version: 2.010
 x_Dist_Zilla:
   perl:
-    version: 5.019001
+    version: 5.019002
   plugins:
     -
       class: Dist::Zilla::Plugin::MetaResources
@@ -64,7 +68,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Compile
       name: '@Filter/Test::Compile'
-      version: 2.008
+      version: 2.002
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/PodCoverageTests'
@@ -73,10 +77,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::PodSyntaxTests
       name: '@Filter/PodSyntaxTests'
       version: 4.300035
-    -
-      class: Dist::Zilla::Plugin::ReportVersions::Tiny
-      name: '@Filter/ReportVersions::Tiny'
-      version: 1.08
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Filter/PruneCruft'
@@ -206,6 +206,30 @@ x_Dist_Zilla:
       name: ModuleBuildTiny
       version: 0.004
     -
+      class: Dist::Zilla::Plugin::Conflicts
+      name: Conflicts
+      version: 0.10
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: conflicts
+      name: DevelopConflicts
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: runtime
+          type: conflicts
+      name: RuntimeConflicts
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::Test::CheckDeps
+      name: Test::CheckDeps
+      version: 0.007
+    -
       class: Dist::Zilla::Plugin::Test::EOL
       name: Test::EOL
       version: 0.07
@@ -248,10 +272,12 @@ x_Dist_Zilla:
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
-      is_trial: 1
+      is_trial: 0
     version: 4.300035
 x_author_pledge:
   version: 1
+x_breaks:
+  Test::Kwalitee::Extra: v0.0.8
 x_contributors:
   - 'Ahmad M. Zawawi <azawawi@ubuntu.(none)>'
   - 'Chris Weyl <cweyl@alumni.drew.edu>'
