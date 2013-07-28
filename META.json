@@ -52,10 +52,9 @@
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "Cwd" : "0",
             "Dist::Zilla::Tester" : "0",
-            "File::Find" : "0",
-            "File::Temp" : "0",
             "Path::Class" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::More" : "0.94"
@@ -65,11 +64,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.010"
+         "version" : "2.011"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.010"
+         "version" : "2.011"
       }
    },
    "release_status" : "stable",
@@ -86,7 +85,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.010",
+   "version" : "2.011",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -110,7 +109,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Filter/Test::Compile",
-            "version" : "2.002"
+            "version" : "2.010"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
@@ -160,7 +159,7 @@
          {
             "class" : "Dist::Zilla::Plugin::PodWeaver",
             "name" : "@Filter/PodWeaver",
-            "version" : "3.101641"
+            "version" : "3.101642"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prepender",

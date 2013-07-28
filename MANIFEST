@@ -24,5 +24,6 @@ t/release-pod-syntax.t
 t/test-compile.t
 t/test-compile/bin/foobar
 t/test-compile/dist.ini
+t/test-compile/lib/Bar.pod
 t/test-compile/lib/Foo.pm
 weaver.ini

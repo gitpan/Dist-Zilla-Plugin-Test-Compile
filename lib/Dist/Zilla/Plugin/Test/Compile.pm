@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.010';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.011';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -106,6 +106,9 @@ sub gather_files {
         not grep { $module =~ $_ } @skips
     } @module_filenames if @skips;
 
+    # pod never returns true when loaded
+    @module_filenames = grep { !/\.pod$/ } @module_filenames;
+
     require Dist::Zilla::File::InMemory;
 
     for my $file (qw( t/00-compile.t )){
@@ -146,7 +149,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.010
+version 2.011
 
 =head1 SYNOPSIS
 
@@ -210,7 +213,7 @@ Perl release)
 
 This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
 modules to check.  The default value is C<:InstallModules>; this option can be
-used more than once.
+used more than once.  .pod files are always omitted.
 
 Other pre-defined finders are listed in
 L<FileFinder|Dist::Zilla::Role::FileFinderUser/default_finders>.
