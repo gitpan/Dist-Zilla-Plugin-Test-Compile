@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.012';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.013';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -99,6 +99,7 @@ sub register_prereqs
         },
         'Test::More' => $self->_test_more_version,
         'Capture::Tiny' => '0',
+        'blib' => '0',
         $self->fake_home ? ( 'File::Temp' => '0' ) : (),
         $self->_script_filenames ? ( 'Test::Script' => '1.05' ) : (),
     );
@@ -110,11 +111,13 @@ sub gather_files {
 
     my @skips = map {; qr/$_/ } $self->skips;
 
-    my @module_filenames = $self->_module_filenames;
+    # we strip the leading lib/ so the %INC entry is correct - to avoid
+    # potentially loading the file again later
+    my @module_filenames = map { s{^lib/}{}; $_ } $self->_module_filenames;
+
     @module_filenames = grep {
-        (my $module = $_) =~ s{^lib/}{};
-        $module=~ s{[/\\]}{::}g;
-        $module=~ s/\.pm$//;
+        (my $module = $_) =~ s{[/\\]}{::}g;
+        $module =~ s/\.pm$//;
         not grep { $module =~ $_ } @skips
     } @module_filenames if @skips;
 
@@ -161,7 +164,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.012
+version 2.013
 
 =head1 SYNOPSIS
 
@@ -390,7 +393,7 @@ my @warnings;
 for my $lib (@module_files)
 {
     my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Ilib', '-e', qq{require qq[$lib]});
+        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
     };
     is($?, 0, "$lib loaded ok");
     warn $stderr if $stderr;

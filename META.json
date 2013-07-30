@@ -64,11 +64,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.012"
+         "version" : "2.013"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.012"
+         "version" : "2.013"
       }
    },
    "release_status" : "stable",
@@ -85,7 +85,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.012",
+   "version" : "2.013",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -108,8 +108,18 @@
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
+            "config" : {
+               "Dist::Zilla::Plugin::Test::Compile" : {
+                  "module_finder" : [
+                     ":InstallModules"
+                  ],
+                  "script_finder" : [
+                     ":ExecFiles"
+                  ]
+               }
+            },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.011"
+            "version" : "2.012"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
@@ -322,6 +332,21 @@
             "class" : "Dist::Zilla::Plugin::ContributorsFromGit",
             "name" : "ContributorsFromGit",
             "version" : "0.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts",
+            "name" : "Git::CheckFor::MergeConflicts",
+            "version" : "0.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch",
+            "name" : "Git::CheckFor::CorrectBranch",
+            "version" : "0.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Git::Remote::Check",
+            "name" : "Git::Remote::Check",
+            "version" : "0.1.2"
          },
          {
             "class" : "Dist::Zilla::Plugin::ConfirmRelease",
