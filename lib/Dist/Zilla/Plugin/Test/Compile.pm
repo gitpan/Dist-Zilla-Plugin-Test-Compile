@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.011';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.012';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -76,6 +76,18 @@ has _script_filenames => (
     lazy => 1,
     default => sub { [ map { $_->name } @{shift->found_script_files} ] },
 );
+
+around dump_config => sub
+{
+    my ($orig, $self) = @_;
+    my $config = $self->$orig;
+
+    $config->{'' . __PACKAGE__} = {
+         module_finder => $self->module_finder,
+         script_finder => $self->script_finder,
+    };
+    return $config;
+};
 
 sub register_prereqs
 {
@@ -149,7 +161,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.011
+version 2.012
 
 =head1 SYNOPSIS
 
@@ -164,8 +176,8 @@ In your dist.ini:
 
 =head1 DESCRIPTION
 
-This is an extension of L<Dist::Zilla::Plugin::InlineFiles>, providing
-the following files:
+This is a plugin that runs at the L<gather files|Dist::Zilla::Role::FileGatherer> stage,
+providing the following files:
 
 =over 4
 
@@ -378,7 +390,7 @@ my @warnings;
 for my $lib (@module_files)
 {
     my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
+        system($^X, '-Ilib', '-e', qq{require qq[$lib]});
     };
     is($?, 0, "$lib loaded ok");
     warn $stderr if $stderr;
