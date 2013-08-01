@@ -12,11 +12,12 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.013';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.014';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
+use File::Spec;
 use Data::Section -setup;
 with (
     'Dist::Zilla::Role::FileGatherer',
@@ -113,7 +114,7 @@ sub gather_files {
 
     # we strip the leading lib/ so the %INC entry is correct - to avoid
     # potentially loading the file again later
-    my @module_filenames = map { s{^lib/}{}; $_ } $self->_module_filenames;
+    my @module_filenames = map { File::Spec->abs2rel($_, 'lib') } $self->_module_filenames;
 
     @module_filenames = grep {
         (my $module = $_) =~ s{[/\\]}{::}g;
@@ -164,7 +165,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.013
+version 2.014
 
 =head1 SYNOPSIS
 

@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.012
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.013
 
 use Test::More 0.94;
 
@@ -10,8 +10,8 @@ use Test::More 0.94;
 use Capture::Tiny qw{ capture };
 
 my @module_files = qw(
-lib/Dist/Zilla/Plugin/CompileTests.pm
-lib/Dist/Zilla/Plugin/Test/Compile.pm
+Dist/Zilla/Plugin/CompileTests.pm
+Dist/Zilla/Plugin/Test/Compile.pm
 );
 
 my @scripts = qw(
@@ -24,7 +24,7 @@ my @warnings;
 for my $lib (@module_files)
 {
     my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Ilib', '-e', qq{require qq[$lib]});
+        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
     };
     is($?, 0, "$lib loaded ok");
     warn $stderr if $stderr;
