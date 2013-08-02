@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.014';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.015';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -156,8 +156,8 @@ __PACKAGE__->meta->make_immutable;
 =encoding utf-8
 
 =for :stopwords Jerome Quelin Ahmad Luehrs Karen Etheridge Kent Fredric Marcel Gruenauer
-Olivier Mengué Randy M. Stauner Ricardo SIGNES fayland Zawawi Chris Weyl
-Harley Pig Jesse
+Olivier Mengué Peter M. Shangov Randy Stauner Ricardo SIGNES fayland Zawawi
+Chris Weyl Harley Pig Jesse
 
 =head1 NAME
 
@@ -165,7 +165,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.014
+version 2.015
 
 =head1 SYNOPSIS
 
@@ -333,6 +333,10 @@ Olivier Mengué <dolmen@cpan.org>
 
 =item *
 
+Peter Shangov <pshangov@yahoo.com>
+
+=item *
+
 Randy Stauner <randy@magnificent-tears.com>
 
 =item *
@@ -394,7 +398,7 @@ my @warnings;
 for my $lib (@module_files)
 {
     my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
+        system($^X, '-Mblib', '-e', qq{require q[$lib]});
     };
     is($?, 0, "$lib loaded ok");
     warn $stderr if $stderr;

@@ -66,11 +66,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.014"
+         "version" : "2.015"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.014"
+         "version" : "2.015"
       }
    },
    "release_status" : "stable",
@@ -87,7 +87,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.014",
+   "version" : "2.015",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -121,7 +121,7 @@
                }
             },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.013"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
@@ -426,6 +426,7 @@
       "Kent Fredric <kentfredric@gmail.com>",
       "Marcel Gruenauer <hanekomu@gmail.com>",
       "Olivier Mengu\u00e9 <dolmen@cpan.org>",
+      "Peter Shangov <pshangov@yahoo.com>",
       "Randy Stauner <randy@magnificent-tears.com>",
       "Ricardo SIGNES <rjbs@cpan.org>",
       "fayland <fayland@gmail.com>"

@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.013
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.014
 
 use Test::More 0.94;
 
