@@ -13,8 +13,6 @@ build_requires:
 configure_requires:
   Dist::CheckConflicts: 0.02
   Module::Build::Tiny: 0.025
-conflicts:
-  Test::Kwalitee::Extra: '<= v0.0.8'
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
 license: perl
@@ -25,10 +23,10 @@ name: Dist-Zilla-Plugin-Test-Compile
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.016
+    version: 2.017
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.016
+    version: 2.017
 requires:
   Data::Section: 0
   Dist::CheckConflicts: 0.02
@@ -49,7 +47,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.016
+version: 2.017
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -75,7 +73,7 @@ x_Dist_Zilla:
           script_finder:
             - ':ExecFiles'
       name: '@Filter/Test::Compile'
-      version: 2.015
+      version: 2.016
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/PodCoverageTests'
@@ -229,16 +227,16 @@ x_Dist_Zilla:
       config:
         Dist::Zilla::Plugin::Prereqs:
           phase: develop
-          type: conflicts
-      name: DevelopConflicts
+          type: requires
+      name: DevelopRequires
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
         Dist::Zilla::Plugin::Prereqs:
-          phase: runtime
+          phase: develop
           type: conflicts
-      name: RuntimeConflicts
+      name: DevelopConflicts
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps

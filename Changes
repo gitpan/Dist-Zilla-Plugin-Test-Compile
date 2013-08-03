@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.017     2013-08-03 19:06:44 Europe/Paris
+ - fix conflicts metadata entry for Test::Kwalitee::Extra (I misinterpreted
+   the metaspec as to what conflicts actually means!)
+
 2.016     2013-08-02 19:48:44 Europe/Paris
  - convert Foo\Bar.pm to Foo/Bar.pm for proper %INC retrieval on win32
    (thanks, haarg!)
