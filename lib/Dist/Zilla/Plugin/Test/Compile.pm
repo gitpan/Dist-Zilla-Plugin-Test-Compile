@@ -12,15 +12,17 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.017';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.018';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
 use Path::Tiny;
-use Data::Section -setup;
+use Sub::Exporter::ForMethods 'method_installer'; # method_installer returns a sub.
+use Data::Section { installer => method_installer }, -setup;
 with (
     'Dist::Zilla::Role::FileGatherer',
+    'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::TextTemplate',
     'Dist::Zilla::Role::FileFinderUser' => {
         method          => 'found_module_files',
@@ -36,6 +38,7 @@ with (
 );
 
 use Moose::Util::TypeConstraints;
+use namespace::autoclean;
 
 # -- attributes
 
@@ -106,9 +109,26 @@ sub register_prereqs
     );
 }
 
-sub gather_files {
+sub gather_files
+{
+    my $self = shift;
 
-    my ( $self , ) = @_;
+    require Dist::Zilla::File::InMemory;
+
+    for my $file (qw( t/00-compile.t )){
+        $self->add_file( Dist::Zilla::File::InMemory->new(
+            name => $file,
+            content => ${$self->section_data($file)},
+        ));
+    }
+}
+
+sub munge_file
+{
+    my ($self, $file) = @_;
+
+    # cannot check full name, as the file may have been moved by [ExtraTests].
+    return unless $file->name =~ /\b00-compile.t$/;
 
     my @skips = map {; qr/$_/ } $self->skips;
 
@@ -125,31 +145,26 @@ sub gather_files {
     # pod never returns true when loaded
     @module_filenames = grep { !/\.pod$/ } @module_filenames;
 
-    require Dist::Zilla::File::InMemory;
+    $file->content(
+        $self->fill_in_string(
+            $file->content,
+            {
+                plugin_version => \($self->VERSION),
+                test_more_version => \($self->_test_more_version),
+                module_filenames => \@module_filenames,
+                script_filenames => [ $self->_script_filenames ],
+                fake_home => \($self->fake_home),
+                needs_display => \($self->needs_display),
+                bail_out_on_fail => \($self->bail_out_on_fail),
+                fail_on_warning => \($self->fail_on_warning),
+            }
+        )
+    );
 
-    for my $file (qw( t/00-compile.t )){
-        $self->add_file( Dist::Zilla::File::InMemory->new(
-            name => $file,
-            content => $self->fill_in_string(
-                ${$self->section_data($file)},
-                {
-                    plugin_version => \($self->VERSION),
-                    test_more_version => \($self->_test_more_version),
-                    module_filenames => \@module_filenames,
-                    script_filenames => [ $self->_script_filenames ],
-                    fake_home => \($self->fake_home),
-                    needs_display => \($self->needs_display),
-                    bail_out_on_fail => \($self->bail_out_on_fail),
-                    fail_on_warning => \($self->fail_on_warning),
-                }
-            ),
-        ));
-    }
+    return;
 }
 
-no Moose;
 __PACKAGE__->meta->make_immutable;
-1;
 
 =pod
 
@@ -165,7 +180,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.017
+version 2.018
 
 =head1 SYNOPSIS
 
@@ -253,6 +268,7 @@ of all subsequent tests when compilation failures are encountered. Defaults to f
     mvp_aliases
     register_prereqs
     gather_files
+    munge_file
 
 =head1 SEE ALSO
 
@@ -406,16 +422,6 @@ for my $lib (@module_files)
 }
 
 {{
-($fail_on_warning ne 'none'
-    ? q{is(scalar(@warnings), 0, 'no warnings found')}
-    : '# no warning checks')
-.
-($fail_on_warning eq 'author'
-    ? ' if $ENV{AUTHOR_TESTING};'
-    : ';')
-}}
-
-{{
 @script_filenames
     ? <<'CODE'
 use Test::Script 1.05;
@@ -424,6 +430,16 @@ foreach my $file ( @scripts ) {
 }
 CODE
     : '';
+}}
+
+{{
+($fail_on_warning ne 'none'
+    ? q{is(scalar(@warnings), 0, 'no warnings found')}
+    : '# no warning checks')
+.
+($fail_on_warning eq 'author'
+    ? ' if $ENV{AUTHOR_TESTING};'
+    : ';')
 }}
 
 {{

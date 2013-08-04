@@ -1,5 +1,11 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.018     2013-08-04 03:25:37 Europe/Paris
+ - delay inserting the list of modules to check until after all plugins have
+   had an opportunity to add files (found via RT#87562)
+ - fail_on_warning setting now also takes into consideration the results of
+   script compilation checks
+
 2.017     2013-08-03 19:06:44 Europe/Paris
  - fix conflicts metadata entry for Test::Kwalitee::Extra (I misinterpreted
    the metaspec as to what conflicts actually means!)
@@ -128,7 +134,7 @@ Revision history for Dist-Zilla-Plugin-Test-Compile
    set! (ahmad m. zawawi)
 
 1.103010  2010-10-28 17:26:19 Europe/Paris
- - no_display is now called needs_display and it reuses 
+ - no_display is now called needs_display and it reuses
    Test::NeedsDisplay (ahmad m. zawawi)
 
 1.103000  2010-10-27 09:16:26 Europe/Paris

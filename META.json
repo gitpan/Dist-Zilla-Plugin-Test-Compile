@@ -38,11 +38,13 @@
             "Dist::Zilla::File::InMemory" : "0",
             "Dist::Zilla::Role::FileFinderUser" : "0",
             "Dist::Zilla::Role::FileGatherer" : "0",
+            "Dist::Zilla::Role::FileMunger" : "0",
             "Dist::Zilla::Role::PrereqSource" : "0",
             "Dist::Zilla::Role::TextTemplate" : "0",
             "Moose" : "0",
             "Moose::Util::TypeConstraints" : "0",
             "Path::Tiny" : "0",
+            "Sub::Exporter::ForMethods" : "0",
             "namespace::autoclean" : "0",
             "perl" : "5.008",
             "strict" : "0",
@@ -64,11 +66,11 @@
    "provides" : {
       "Dist::Zilla::Plugin::CompileTests" : {
          "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.017"
+         "version" : "2.018"
       },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.017"
+         "version" : "2.018"
       }
    },
    "release_status" : "stable",
@@ -85,7 +87,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.017",
+   "version" : "2.018",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -119,7 +121,7 @@
                }
             },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.016"
+            "version" : "2.017"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
