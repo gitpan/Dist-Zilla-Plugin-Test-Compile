@@ -12,14 +12,16 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.018';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.019';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
 use Moose;
 use Path::Tiny;
 use Sub::Exporter::ForMethods 'method_installer'; # method_installer returns a sub.
-use Data::Section { installer => method_installer }, -setup;
+use Data::Section 0.004 # fixed header_re
+    { installer => method_installer }, '-setup';
+
 with (
     'Dist::Zilla::Role::FileGatherer',
     'Dist::Zilla::Role::FileMunger',
@@ -102,8 +104,9 @@ sub register_prereqs
             phase => 'test',
         },
         'Test::More' => $self->_test_more_version,
-        'Capture::Tiny' => '0',
-        'blib' => '0',
+        'IPC::Open3' => 0,
+        'IO::Handle' => 0,
+        'File::Spec' => 0,
         $self->fake_home ? ( 'File::Temp' => '0' ) : (),
         $self->_script_filenames ? ( 'Test::Script' => '1.05' ) : (),
     );
@@ -145,14 +148,20 @@ sub munge_file
     # pod never returns true when loaded
     @module_filenames = grep { !/\.pod$/ } @module_filenames;
 
+    my @script_filenames = $self->_script_filenames;
+
+    $self->log_debug('adding module ' . $_) foreach @module_filenames;
+    $self->log_debug('adding script ' . $_) foreach @script_filenames;
+
     $file->content(
         $self->fill_in_string(
             $file->content,
             {
-                plugin_version => \($self->VERSION),
+                dist => \($self->zilla),
+                plugin => \$self,
                 test_more_version => \($self->_test_more_version),
                 module_filenames => \@module_filenames,
-                script_filenames => [ $self->_script_filenames ],
+                script_filenames => \@script_filenames,
                 fake_home => \($self->fake_home),
                 needs_display => \($self->needs_display),
                 bail_out_on_fail => \($self->bail_out_on_fail),
@@ -170,9 +179,10 @@ __PACKAGE__->meta->make_immutable;
 
 =encoding utf-8
 
-=for :stopwords Jerome Quelin Ahmad Luehrs Karen Etheridge Kent Fredric Marcel Gruenauer
-Olivier Mengué Peter M. Shangov Randy Stauner Ricardo SIGNES fayland Zawawi
-Chris Weyl Harley Pig Jesse
+=for :stopwords Jerome Quelin Ahmad Jesse Luehrs Karen Etheridge Kent Fredric Marcel
+Gruenauer Olivier M. Mengué Peter Shangov Randy Stauner Ricardo SIGNES
+fayland Zawawi Chris Weyl Graham Knop Harley Pig cpantesters FileFinder
+executables AnnoCPAN
 
 =head1 NAME
 
@@ -180,11 +190,11 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.018
+version 2.019
 
 =head1 SYNOPSIS
 
-In your dist.ini:
+In your F<dist.ini>:
 
     [Test::Compile]
     skip      = Test$
@@ -218,8 +228,14 @@ This plugin accepts the following options:
 match is done against the module name (C<Foo::Bar>), not the file path
 (F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
 
+=for Pod::Coverage::TrustPod mvp_multivalue_args
+    mvp_aliases
+    register_prereqs
+    gather_files
+    munge_file
+
 =item * fake_home: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
-This may be needed if your module unilateraly creates stuff in homedir:
+This may be needed if your module unilaterally creates stuff in the user's home directory:
 indeed, some cpantesters will smoke test your dist with a read-only home
 directory. Default to false.
 
@@ -240,6 +256,8 @@ warnings during compilation checks. Possible values are:
 installation of modules when upstream dependencies exhibit warnings in a new
 Perl release)
 
+=back
+
 =item * module_finder
 
 This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
@@ -257,18 +275,10 @@ Just like C<module_finder>, but for finding scripts.  The default value is
 C<:ExecFiles> (you can use the L<Dist::Zilla::Plugin::ExecDir> plugin to mark
 those files as executables).
 
-=back
-
 =item * bail_out_on_fail: a boolean to indicate whether the test will BAIL_OUT
 of all subsequent tests when compilation failures are encountered. Defaults to false.
 
 =back
-
-=for Pod::Coverage::TrustPod mvp_multivalue_args
-    mvp_aliases
-    register_prereqs
-    gather_files
-    munge_file
 
 =head1 SEE ALSO
 
@@ -318,6 +328,10 @@ Ahmad M. Zawawi <azawawi@ubuntu.(none)>
 =item *
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
 
 =item *
 
@@ -372,7 +386,7 @@ ___[ t/00-compile.t ]___
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile {{ $plugin_version }}
+# this test was generated with {{ ref($plugin) . ' ' . $plugin->VERSION }}
 
 use Test::More {{ $test_more_version }};
 
@@ -390,14 +404,12 @@ CODE
     : ''
 }}
 
-use Capture::Tiny qw{ capture };
-
-my @module_files = qw(
-{{ join("\n", sort @module_filenames) }}
+my @module_files = (
+{{ join(",\n", map { "    '" . $_ . "'" } map { s/'/\\'/g; $_ } sort @module_filenames) }}
 );
 
-my @scripts = qw(
-{{ join("\n", sort @script_filenames) }}
+my @scripts = (
+{{ join(",\n", map { "    '" . $_ . "'" } map { s/'/\\'/g; $_ } sort @script_filenames) }}
 );
 
 {{
@@ -410,15 +422,26 @@ CODE
     : '# no fake home requested';
 }}
 
+use IPC::Open3;
+use IO::Handle;
+use File::Spec;
+
 my @warnings;
 for my $lib (@module_files)
 {
-    my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Mblib', '-e', qq{require q[$lib]});
-    };
-    is($?, 0, "$lib loaded ok");
-    warn $stderr if $stderr;
-    push @warnings, $stderr if $stderr;
+    open my $stdout, '>', File::Spec->devnull or die $!;
+    open my $stdin, '<', File::Spec->devnull or die $!;
+    my $stderr = IO::Handle->new;
+
+    my $pid = open3($stdin, $stdout, $stderr, qq{$^X -Mblib -e"require q[$lib]"});
+    waitpid($pid, 0);
+    is($? >> 8, 0, "$lib loaded ok");
+
+    if (my @_warnings = <$stderr>)
+    {
+        warn @_warnings;
+        push @warnings, @_warnings;
+    }
 }
 
 {{

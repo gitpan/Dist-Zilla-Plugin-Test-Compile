@@ -30,9 +30,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Jerome Quelin Ahmad Luehrs Karen Etheridge Kent Fredric Marcel Gruenauer
-Olivier Mengué Peter M. Shangov Randy Stauner Ricardo SIGNES fayland Zawawi
-Chris Weyl Harley Pig Jesse
+=for :stopwords Jerome Quelin
 
 =head1 NAME
 
@@ -40,7 +38,7 @@ Dist::Zilla::Plugin::Test::Compile::Conflicts - Provide information on conflicts
 
 =head1 VERSION
 
-version 2.018
+version 2.019
 
 =head1 AUTHOR
 

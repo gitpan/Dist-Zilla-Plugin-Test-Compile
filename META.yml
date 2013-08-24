@@ -6,29 +6,41 @@ build_requires:
   Capture::Tiny: 0
   Cwd: 0
   Dist::Zilla::Tester: 0
+  JSON: 0
+  Module::CoreList: 0
   Path::Class: 0
   Test::CheckDeps: 0.006
+  Test::DZil: 0
   Test::More: 0.94
+  Test::Warnings: 0
   blib: 0
+  version: 0
 configure_requires:
   Dist::CheckConflicts: 0.02
-  Module::Build::Tiny: 0.025
+  Module::Build::Tiny: 0.026
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: Dist-Zilla-Plugin-Test-Compile
+no_index:
+  directory:
+    - t
+    - xt
+    - examples
+  package:
+    - Dist::Zilla::Plugin::Test::Compile::Conflicts
 provides:
   Dist::Zilla::Plugin::CompileTests:
     file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.018
+    version: 2.019
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.018
+    version: 2.019
 requires:
-  Data::Section: 0
+  Data::Section: 0.004
   Dist::CheckConflicts: 0.02
   Dist::Zilla::File::InMemory: 0
   Dist::Zilla::Role::FileFinderUser: 0
@@ -49,10 +61,10 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.018
+version: 2.019
 x_Dist_Zilla:
   perl:
-    version: 5.019002
+    version: 5.019003
   plugins:
     -
       class: Dist::Zilla::Plugin::MetaResources
@@ -75,7 +87,7 @@ x_Dist_Zilla:
           script_finder:
             - ':ExecFiles'
       name: '@Filter/Test::Compile'
-      version: 2.017
+      version: 2.018
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/PodCoverageTests'
@@ -99,10 +111,6 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: '@Filter/AutoPrereqs'
-      version: 4.300035
-    -
-      class: Dist::Zilla::Plugin::ExtraTests
-      name: '@Filter/ExtraTests'
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::NextRelease
@@ -241,6 +249,18 @@ x_Dist_Zilla:
       name: DevelopConflicts
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::MetaNoIndex
+      name: MetaNoIndex
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::MetaProvides::Package
+      name: MetaProvides::Package
+      version: 1.14000003
+    -
+      class: Dist::Zilla::Plugin::RunExtraTests
+      name: RunExtraTests
+      version: 0.011
+    -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: Test::CheckDeps
       version: 0.007
@@ -248,6 +268,38 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::EOL
       name: Test::EOL
       version: 0.07
+    -
+      class: Dist::Zilla::Plugin::Test::CPAN::Changes
+      name: Test::CPAN::Changes
+      version: 0.008
+    -
+      class: Dist::Zilla::Plugin::MetaTests
+      name: MetaTests
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::Test::Version
+      name: Test::Version
+      version: 0.002004
+    -
+      class: Dist::Zilla::Plugin::Test::ChangesHasContent
+      name: Test::ChangesHasContent
+      version: 0.006
+    -
+      class: Dist::Zilla::Plugin::Test::UnusedVars
+      name: Test::UnusedVars
+      version: 2.000005
+    -
+      class: Dist::Zilla::Plugin::Test::MinimumVersion
+      name: Test::MinimumVersion
+      version: 2.000005
+    -
+      class: Dist::Zilla::Plugin::Test::PodSpelling
+      name: Test::PodSpelling
+      version: 2.006000
+    -
+      class: Dist::Zilla::Plugin::Test::Pod::No404s
+      name: Test::Pod::No404s
+      version: 1.001
     -
       class: Dist::Zilla::Plugin::ContributorsFromGit
       name: ContributorsFromGit
@@ -308,6 +360,7 @@ x_breaks:
 x_contributors:
   - 'Ahmad M. Zawawi <azawawi@ubuntu.(none)>'
   - 'Chris Weyl <cweyl@alumni.drew.edu>'
+  - 'Graham Knop <haarg@haarg.org>'
   - 'Harley Pig <harleypig@gmail.com>'
   - 'Jerome Quelin <jquelin@gmail.com>'
   - 'Jesse Luehrs <doy@tozt.net>'
