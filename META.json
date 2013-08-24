@@ -65,29 +65,26 @@
       },
       "test" : {
          "requires" : {
-            "Capture::Tiny" : "0",
             "Cwd" : "0",
             "Dist::Zilla::Tester" : "0",
+            "File::Spec" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
             "JSON" : "0",
-            "Module::CoreList" : "0",
+            "Module::CoreList" : "2.77",
             "Path::Class" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::DZil" : "0",
             "Test::More" : "0.94",
             "Test::Warnings" : "0",
-            "blib" : "0",
             "version" : "0"
          }
       }
    },
    "provides" : {
-      "Dist::Zilla::Plugin::CompileTests" : {
-         "file" : "lib/Dist/Zilla/Plugin/CompileTests.pm",
-         "version" : "2.019"
-      },
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.019"
+         "version" : "2.020"
       }
    },
    "release_status" : "stable",
@@ -104,7 +101,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.019",
+   "version" : "2.020",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019003"
@@ -138,7 +135,7 @@
                }
             },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.018"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",

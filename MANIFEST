@@ -9,16 +9,11 @@ META.yml
 README
 dist.ini
 examples/dist.ini
-lib/Dist/Zilla/Plugin/CompileTests.pm
 lib/Dist/Zilla/Plugin/Test/Compile.pm
 lib/Dist/Zilla/Plugin/Test/Compile/Conflicts.pm
 t/00-check-deps.t
 t/00-compile.t
 t/02_warnings.t
-t/compile-tests.t
-t/compile-tests/dist.ini
-t/compile-tests/lib/Bar.pm
-t/compile-tests/lib/Foo.pm
 t/test-compile.t
 t/test-compile/bin/foobar
 t/test-compile/dist.ini

@@ -3,17 +3,18 @@ abstract: 'common tests to check syntax of your modules'
 author:
   - 'Jerome Quelin'
 build_requires:
-  Capture::Tiny: 0
   Cwd: 0
   Dist::Zilla::Tester: 0
+  File::Spec: 0
+  IO::Handle: 0
+  IPC::Open3: 0
   JSON: 0
-  Module::CoreList: 0
+  Module::CoreList: 2.77
   Path::Class: 0
   Test::CheckDeps: 0.006
   Test::DZil: 0
   Test::More: 0.94
   Test::Warnings: 0
-  blib: 0
   version: 0
 configure_requires:
   Dist::CheckConflicts: 0.02
@@ -33,12 +34,9 @@ no_index:
   package:
     - Dist::Zilla::Plugin::Test::Compile::Conflicts
 provides:
-  Dist::Zilla::Plugin::CompileTests:
-    file: lib/Dist/Zilla/Plugin/CompileTests.pm
-    version: 2.019
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.019
+    version: 2.020
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -61,7 +59,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.019
+version: 2.020
 x_Dist_Zilla:
   perl:
     version: 5.019003
@@ -87,7 +85,7 @@ x_Dist_Zilla:
           script_finder:
             - ':ExecFiles'
       name: '@Filter/Test::Compile'
-      version: 2.018
+      version: 2.019
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/PodCoverageTests'

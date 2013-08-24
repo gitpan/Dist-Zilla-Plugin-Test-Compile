@@ -38,7 +38,7 @@ Dist::Zilla::Plugin::Test::Compile::Conflicts - Provide information on conflicts
 
 =head1 VERSION
 
-version 2.019
+version 2.020
 
 =head1 AUTHOR
 

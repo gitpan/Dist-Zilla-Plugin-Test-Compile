@@ -56,4 +56,3 @@ Plugin
 Test
 Compile
 Conflicts
-CompileTests
