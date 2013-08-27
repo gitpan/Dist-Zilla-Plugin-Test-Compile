@@ -2,7 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use Test::Warnings ':all';
+use Test::Warnings 0.005 ':all';
 use Test::DZil;
 use Path::Class;
 use Cwd;
@@ -21,7 +21,7 @@ my $tzil = Builder->from_config(
 package LittleKaboom;
 use strict;
 use warnings;
-warn 'there was supposed to be a kaboom';
+warn "there was supposed to be a kaboom\n";
 1;
 MODULE
         },
@@ -48,8 +48,7 @@ is(
             do $file;
         };
     },
-    'there was supposed to be a kaboom at '
-        . $build_dir->file(qw(blib lib LittleKaboom.pm)) . " line 4.\n",
+    "there was supposed to be a kaboom\n",
     'warnings from compiling LittleKaboom are captured',
 );
 
