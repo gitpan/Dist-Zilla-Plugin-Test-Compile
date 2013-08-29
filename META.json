@@ -73,6 +73,7 @@
             "Test::CheckDeps" : "0.006",
             "Test::DZil" : "0",
             "Test::More" : "0.94",
+            "Test::Script" : "1.05",
             "Test::Warnings" : "0.005",
             "version" : "0"
          }
@@ -81,7 +82,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.021"
+         "version" : "2.022"
       }
    },
    "release_status" : "stable",
@@ -98,7 +99,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.021",
+   "version" : "2.022",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019003"
@@ -132,7 +133,7 @@
                }
             },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.020"
+            "version" : "2.021"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
@@ -173,6 +174,11 @@
             "class" : "Dist::Zilla::Plugin::PkgVersion",
             "name" : "@Filter/PkgVersion",
             "version" : "4.300036"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::PodWeaver",
+            "name" : "@Filter/PodWeaver",
+            "version" : "3.101642"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prepender",
@@ -290,16 +296,6 @@
             "version" : "4.300036"
          },
          {
-            "class" : "Dist::Zilla::Plugin::FileFinder::Filter",
-            "name" : "NoConflicts",
-            "version" : "4.300036"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::PodWeaver",
-            "name" : "PodWeaver",
-            "version" : "3.101642"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::ModuleBuildTiny",
             "name" : "ModuleBuildTiny",
             "version" : "0.004"
@@ -319,6 +315,17 @@
             "class" : "Dist::Zilla::Plugin::Conflicts",
             "name" : "Conflicts",
             "version" : "0.13"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "test",
+                  "type" : "requires"
+               }
+            },
+            "name" : "TestRequires",
+            "version" : "4.300036"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs",

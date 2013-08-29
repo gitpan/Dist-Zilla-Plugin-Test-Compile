@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.021';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.022';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -182,7 +182,7 @@ __PACKAGE__->meta->make_immutable;
 =for :stopwords Jerome Quelin Ahmad Jesse Luehrs Karen Etheridge Kent Fredric Marcel
 Gruenauer Olivier M. Mengué Peter Shangov Randy Stauner Ricardo SIGNES
 fayland Zawawi Chris Weyl Graham Knop Harley Pig cpantesters FileFinder
-executables AnnoCPAN
+executables
 
 =head1 NAME
 
@@ -190,7 +190,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.021
+version 2.022
 
 =head1 SYNOPSIS
 
@@ -216,15 +216,13 @@ This test will find all modules and scripts in your dist, and try to
 compile them one by one. This means it's a bit slower than loading them
 all at once, but it will catch more errors.
 
-We currently only check F<bin/>, F<script/> and F<scripts/> for scripts.
-
 =back
 
 This plugin accepts the following options:
 
 =over 4
 
-=item * skip: a regex to skip compile test for modules matching it. The
+=item * C<skip>: a regex to skip compile test for modules matching it. The
 match is done against the module name (C<Foo::Bar>), not the file path
 (F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
 
@@ -234,75 +232,59 @@ match is done against the module name (C<Foo::Bar>), not the file path
     gather_files
     munge_file
 
-=item * fake_home: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
+=item * C<fake_home>: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
 This may be needed if your module unilaterally creates stuff in the user's home directory:
 indeed, some cpantesters will smoke test your dist with a read-only home
 directory. Default to false.
 
-=item * needs_display: a boolean to indicate whether to skip the compile test
+=item * C<needs_display>: a boolean to indicate whether to skip the compile test
 on non-Win32 systems when C<< $ENV{DISPLAY} >> is not set. Defaults to false.
 
-=item * fail_on_warning: a string to indicate when to add a test for
+=item * C<fail_on_warning>: a string to indicate when to add a test for
 warnings during compilation checks. Possible values are:
 
 =over 4
 
-=item * none: do not check for warnings
+=item * C<none>: do not check for warnings
 
-=item * author: check for warnings only when AUTHOR_TESTING is set
+=item * C<author>: check for warnings only when AUTHOR_TESTING is set
 (default, and recommended)
 
-=item * all: always test for warnings (not recommended, as this can prevent
+=item * C<all>: always test for warnings (not recommended, as this can prevent
 installation of modules when upstream dependencies exhibit warnings in a new
 Perl release)
 
 =back
 
-=item * module_finder
+=item * C<bail_out_on_fail>: a boolean to indicate whether the test will BAIL_OUT
+of all subsequent tests when compilation failures are encountered. Defaults to false.
+
+=item * C<module_finder>
 
 This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
 modules to check.  The default value is C<:InstallModules>; this option can be
 used more than once.  .pod files are always omitted.
 
 Other pre-defined finders are listed in
-L<FileFinder|Dist::Zilla::Role::FileFinderUser/default_finders>.
+L<Dist::Zilla::Role::FileFinderUser/default_finders>.
 You can define your own with the
-L<Dist::Zilla::Plugin::FileFinder::ByName|[FileFinder::ByName]> plugin.
+L<[FileFinder::ByName]|Dist::Zilla::Plugin::FileFinder::ByName> plugin.
 
-=item * script_finder
+=item * C<script_finder>
 
 Just like C<module_finder>, but for finding scripts.  The default value is
-C<:ExecFiles> (you can use the L<Dist::Zilla::Plugin::ExecDir> plugin to mark
-those files as executables).
-
-=item * bail_out_on_fail: a boolean to indicate whether the test will BAIL_OUT
-of all subsequent tests when compilation failures are encountered. Defaults to false.
+C<:ExecFiles> (see also L<Dist::Zilla::Plugin::ExecDir>, to make sure these
+files are properly marked as executables for the installer).
 
 =back
 
 =head1 SEE ALSO
 
-L<Test::NeedsDisplay>
-
-You can also look for information on this module at:
-
 =over 4
 
-=item * AnnoCPAN: Annotated CPAN documentation
+=item * L<Test::NeedsDisplay>
 
-L<http://annocpan.org/dist/Dist-Zilla-Plugin-Test-Compile>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-Test-Compile>
-
-=item * Open bugs
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-Test-Compile>
-
-=item * Git repository
-
-L<http://github.com/jquelin/dist-zilla-plugin-test-compile.git>.
+=item * L<Test::Script>
 
 =back
 
