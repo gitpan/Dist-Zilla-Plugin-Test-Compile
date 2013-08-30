@@ -13,8 +13,10 @@ lib/Dist/Zilla/Plugin/Test/Compile.pm
 lib/Dist/Zilla/Plugin/Test/Compile/Conflicts.pm
 t/00-check-deps.t
 t/00-compile.t
+t/01-basic.t
 t/02_warnings.t
-t/test-compile.t
+t/03-taint.t
+t/04-bash.t
 t/test-compile/bin/foobar
 t/test-compile/dist.ini
 t/test-compile/lib/Bar.pod

@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.022';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.023';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -63,7 +63,7 @@ has _test_more_version => (
     is => 'ro', isa => 'Str',
     init_arg => undef,
     lazy => 1,
-    default => sub { shift->bail_out_on_fail ? '0.94' : '0.88' },
+    default => sub { shift->bail_out_on_fail ? '0.94' : '0' },
 );
 
 # note that these two attributes could conceivably be settable via dist.ini,
@@ -106,9 +106,7 @@ sub register_prereqs
         'Test::More' => $self->_test_more_version,
         'IPC::Open3' => 0,
         'IO::Handle' => 0,
-        'File::Spec' => 0,
         $self->fake_home ? ( 'File::Temp' => '0' ) : (),
-        $self->_script_filenames ? ( 'Test::Script' => '1.05' ) : (),
     );
 }
 
@@ -190,7 +188,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.022
+version 2.023
 
 =head1 SYNOPSIS
 
@@ -370,7 +368,12 @@ use warnings;
 
 # this test was generated with {{ ref($plugin) . ' ' . $plugin->VERSION }}
 
-use Test::More {{ $test_more_version }};
+use Test::More {{ $test_more_version || '' }} tests => {{
+    my $count = @module_filenames + @script_filenames;
+    $count += 1 if $fail_on_warning eq 'all';
+    $count .= ' + ($ENV{AUTHOR_TESTING} ? 1 : 0)' if $fail_on_warning eq 'author';
+    $count;
+}};
 
 {{
 $needs_display
@@ -390,9 +393,13 @@ my @module_files = (
 {{ join(",\n", map { "    '" . $_ . "'" } map { s/'/\\'/g; $_ } sort @module_filenames) }}
 );
 
-my @scripts = (
-{{ join(",\n", map { "    '" . $_ . "'" } map { s/'/\\'/g; $_ } sort @script_filenames) }}
-);
+{{
+    @script_filenames
+        ? 'my @scripts = (' . "\n"
+          . join(",\n", map { "    '" . $_ . "'" } map { s/'/\\'/g; $_ } sort @script_filenames)
+          . "\n" . ');'
+        : ''
+}}
 
 {{
 $fake_home
@@ -406,16 +413,15 @@ CODE
 
 use IPC::Open3;
 use IO::Handle;
-use File::Spec;
 
 my @warnings;
 for my $lib (@module_files)
 {
-    open my $stdout, '>', File::Spec->devnull or die $!;
-    open my $stdin, '<', File::Spec->devnull or die $!;
+    # see L<perlfaq8/How can I capture STDERR from an external command?>
+    my $stdin = '';     # converted to a gensym by open3
     my $stderr = IO::Handle->new;
 
-    my $pid = open3($stdin, $stdout, $stderr, qq{$^X -Mblib -e"require q[$lib]"});
+    my $pid = open3($stdin, '>&STDERR', $stderr, qq{$^X -Mblib -e"require q[$lib]"});
     waitpid($pid, 0);
     is($? >> 8, 0, "$lib loaded ok");
 
@@ -429,10 +435,27 @@ for my $lib (@module_files)
 {{
 @script_filenames
     ? <<'CODE'
-use Test::Script 1.05;
-foreach my $file ( @scripts ) {
-    script_compiles( $file, "$file compiles" );
-}
+foreach my $file (@scripts)
+{ SKIP: {
+    open my $fh, '<', $file or warn("Unable to open $file: $!"), next;
+    my $line = <$fh>;
+    close $fh and skip("$file isn't perl", 1) unless $line =~ /^#!.*?\bperl\b\s*(.*)$/;
+
+    my $flags = $1;
+
+    my $stdin = '';     # converted to a gensym by open3
+    my $stderr = IO::Handle->new;
+
+    my $pid = open3($stdin, '>&STDERR', $stderr, qq{$^X -Mblib $flags -c $file});
+    waitpid($pid, 0);
+    is($? >> 8, 0, "$file compiled ok");
+
+    if (my @_warnings = grep { !/syntax OK$/ } <$stderr>)
+    {
+        warn @_warnings;
+        push @warnings, @_warnings;
+    }
+} }
 CODE
     : '';
 }}
@@ -452,5 +475,3 @@ $bail_out_on_fail
     ? 'BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;'
     : '';
 }}
-
-done_testing;

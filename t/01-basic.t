@@ -1,17 +1,18 @@
 use strict;
 use warnings;
 
-use Dist::Zilla::Tester;
+use Test::More;
+use Test::Warnings;
+use Test::DZil;
 use Path::Class;
 use Cwd;
 use Config;
-use Test::More;
 use JSON;
 use Module::CoreList 2.77;
 use version;
 
 # build fake dist
-my $tzil = Dist::Zilla::Tester->from_config({
+my $tzil = Builder->from_config({
     dist_root => dir(qw(t test-compile)),
 });
 $tzil->build;
@@ -42,6 +43,7 @@ subtest 'run the generated test' => sub
 
     local $ENV{AUTHOR_TESTING} = 1;
     do $file;
+    warn $@ if $@;
 
     $files_tested = Test::Builder->new->current_test;
 };
@@ -49,7 +51,7 @@ subtest 'run the generated test' => sub
 is($files_tested, @files + 1, 'correct number of files were tested, plus warnings checked');
 
 
-# confirm that all injected prereqs are in core (except Test::Script)
+# confirm that all injected prereqs are in core
 
 my $minimum_perl = version->parse('5.006002');  # minimum perl for any version of the prereq
 my $in_core_perl = version->parse('5.012000');  # minimum perl to contain the version we use
@@ -58,8 +60,6 @@ my $metadata = JSON->new->ascii(1)->decode($tzil->slurp_file('build/META.json'))
 
 foreach my $prereq (keys %{$metadata->{prereqs}{test}{requires}})
 {
-    next if $prereq eq 'Test::Script';
-
     my $added_in = Module::CoreList->first_release($prereq);
 
     # this code is borrowed ethusiastically from [OnlyCorePrereqs]
