@@ -12,7 +12,7 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.023';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.024';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -188,7 +188,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.023
+version 2.024
 
 =head1 SYNOPSIS
 
@@ -243,9 +243,9 @@ warnings during compilation checks. Possible values are:
 
 =over 4
 
-=item * C<none>: do not check for warnings
+=item * C<none>: do not test for warnings
 
-=item * C<author>: check for warnings only when AUTHOR_TESTING is set
+=item * C<author>: test for warnings only when AUTHOR_TESTING is set
 (default, and recommended)
 
 =item * C<all>: always test for warnings (not recommended, as this can prevent
@@ -450,12 +450,24 @@ foreach my $file (@scripts)
     waitpid($pid, 0);
     is($? >> 8, 0, "$file compiled ok");
 
-    if (my @_warnings = grep { !/syntax OK$/ } <$stderr>)
+    if (my @_warnings = grep { !/syntax OK\R/ } <$stderr>)
     {
-        warn @_warnings;
+        # temporary measure - win32 newline issues?
+        warn map { _show_whitespace($_) } @_warnings;
         push @warnings, @_warnings;
     }
 } }
+
+sub _show_whitespace
+{
+    my $string = shift;
+    $string =~ s/\n/[\\n]/g;
+    $string =~ s/\r/[\\r]/g;
+    $string =~ s/\t/[\\t]/g;
+    $string =~ s/ /[\\s]/g;
+    return $string;
+}
+
 CODE
     : '';
 }}

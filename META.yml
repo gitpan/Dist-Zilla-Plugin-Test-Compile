@@ -4,12 +4,10 @@ author:
   - 'Jerome Quelin'
 build_requires:
   Cwd: 0
-  File::Spec: 0
   IO::Handle: 0
   IPC::Open3: 0
   JSON: 0
   Module::CoreList: 2.77
-  Path::Class: 0
   Test::CheckDeps: 0.006
   Test::DZil: 0
   Test::More: 0.94
@@ -33,7 +31,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.023
+    version: 2.024
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -56,7 +54,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.023
+version: 2.024
 x_Dist_Zilla:
   perl:
     version: 5.019003
@@ -82,7 +80,7 @@ x_Dist_Zilla:
           script_finder:
             - ':ExecFiles'
       name: '@Filter/Test::Compile'
-      version: 2.022
+      version: 2.023
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/PodCoverageTests'

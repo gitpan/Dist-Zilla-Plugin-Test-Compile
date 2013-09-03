@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.024     2013-09-03 00:02:21Z (Karen Etheridge)
+ - update warning regexp in test yet again, due to win32 failures (does not
+   concern the generated test)
+
 2.023     2013-08-30 01:27:54Z (Karen Etheridge)
  - now routing subprocesses' stdout to our stderr rather than throwing it
    away, for greater visibility into any side effects caused by loading
