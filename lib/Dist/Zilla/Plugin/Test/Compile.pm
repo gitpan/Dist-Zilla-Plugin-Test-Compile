@@ -11,8 +11,11 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
+BEGIN {
+  $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
+}
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.024';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.025';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -188,7 +191,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.024
+version 2.025
 
 =head1 SYNOPSIS
 
@@ -435,6 +438,7 @@ for my $lib (@module_files)
 {{
 @script_filenames
     ? <<'CODE'
+use File::Spec;
 foreach my $file (@scripts)
 { SKIP: {
     open my $fh, '<', $file or warn("Unable to open $file: $!"), next;
@@ -450,7 +454,9 @@ foreach my $file (@scripts)
     waitpid($pid, 0);
     is($? >> 8, 0, "$file compiled ok");
 
-    if (my @_warnings = grep { !/syntax OK\R/ } <$stderr>)
+   # in older perls, -c output is simply the file portion of the path being tested
+    if (my @_warnings = grep { chomp; !/\bsyntax OK$/ }
+        grep { chomp; $_ ne (File::Spec->splitpath($file))[2] } <$stderr>)
     {
         # temporary measure - win32 newline issues?
         warn map { _show_whitespace($_) } @_warnings;

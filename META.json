@@ -65,10 +65,11 @@
             "Cwd" : "0",
             "IO::Handle" : "0",
             "IPC::Open3" : "0",
-            "JSON" : "0",
             "Module::CoreList" : "2.77",
+            "Perl::PrereqScanner" : "1.016",
             "Test::CheckDeps" : "0.006",
             "Test::DZil" : "0",
+            "Test::MinimumVersion" : "0",
             "Test::More" : "0.94",
             "Test::Warnings" : "0.005",
             "version" : "0"
@@ -78,7 +79,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.024"
+         "version" : "2.025"
       }
    },
    "release_status" : "stable",
@@ -95,7 +96,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.024",
+   "version" : "2.025",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019003"
@@ -129,7 +130,7 @@
                }
             },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
@@ -295,6 +296,11 @@
             "class" : "Dist::Zilla::Plugin::ModuleBuildTiny",
             "name" : "ModuleBuildTiny",
             "version" : "0.004"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Authority",
+            "name" : "Authority",
+            "version" : "1.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs",
@@ -481,6 +487,7 @@
    "x_author_pledge" : {
       "version" : 1
    },
+   "x_authority" : "cpan:JQUELIN",
    "x_breaks" : {
       "Test::Kwalitee::Extra" : "v0.0.8"
    },

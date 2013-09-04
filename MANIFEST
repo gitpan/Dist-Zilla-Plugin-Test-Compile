@@ -17,6 +17,7 @@ t/01-basic.t
 t/02_warnings.t
 t/03-taint.t
 t/04-bash.t
+t/05-prereqs.t
 t/test-compile/bin/foobar
 t/test-compile/dist.ini
 t/test-compile/lib/Bar.pod
