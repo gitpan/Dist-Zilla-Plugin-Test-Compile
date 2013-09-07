@@ -32,7 +32,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.025
+    version: 2.026
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -55,7 +55,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.025
+version: 2.026
 x_Dist_Zilla:
   perl:
     version: 5.019003
@@ -81,7 +81,7 @@ x_Dist_Zilla:
           script_finder:
             - ':ExecFiles'
       name: '@Filter/Test::Compile'
-      version: 2.024
+      version: 2.025
     -
       class: Dist::Zilla::Plugin::PodCoverageTests
       name: '@Filter/PodCoverageTests'
@@ -301,11 +301,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: build
-      version: 0.002
+      version: 0.003
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: release
-      version: 0.002
+      version: 0.003
     -
       class: Dist::Zilla::Plugin::ContributorsFromGit
       name: ContributorsFromGit

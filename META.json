@@ -79,7 +79,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.025"
+         "version" : "2.026"
       }
    },
    "release_status" : "stable",
@@ -96,7 +96,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.025",
+   "version" : "2.026",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019003"
@@ -130,7 +130,7 @@
                }
             },
             "name" : "@Filter/Test::Compile",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodCoverageTests",
@@ -408,12 +408,12 @@
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
             "name" : "build",
-            "version" : "0.002"
+            "version" : "0.003"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
             "name" : "release",
-            "version" : "0.002"
+            "version" : "0.003"
          },
          {
             "class" : "Dist::Zilla::Plugin::ContributorsFromGit",

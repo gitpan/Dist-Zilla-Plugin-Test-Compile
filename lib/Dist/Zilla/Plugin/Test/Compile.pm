@@ -15,7 +15,7 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.025';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.026';
 }
 # ABSTRACT: common tests to check syntax of your modules
 
@@ -191,7 +191,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.025
+version 2.026
 
 =head1 SYNOPSIS
 
@@ -423,6 +423,7 @@ for my $lib (@module_files)
     # see L<perlfaq8/How can I capture STDERR from an external command?>
     my $stdin = '';     # converted to a gensym by open3
     my $stderr = IO::Handle->new;
+    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
 
     my $pid = open3($stdin, '>&STDERR', $stderr, qq{$^X -Mblib -e"require q[$lib]"});
     waitpid($pid, 0);
@@ -449,13 +450,14 @@ foreach my $file (@scripts)
 
     my $stdin = '';     # converted to a gensym by open3
     my $stderr = IO::Handle->new;
+    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
 
     my $pid = open3($stdin, '>&STDERR', $stderr, qq{$^X -Mblib $flags -c $file});
     waitpid($pid, 0);
     is($? >> 8, 0, "$file compiled ok");
 
    # in older perls, -c output is simply the file portion of the path being tested
-    if (my @_warnings = grep { chomp; !/\bsyntax OK$/ }
+    if (my @_warnings = grep { !/\bsyntax OK$/ }
         grep { chomp; $_ ne (File::Spec->splitpath($file))[2] } <$stderr>)
     {
         # temporary measure - win32 newline issues?
@@ -467,8 +469,8 @@ foreach my $file (@scripts)
 sub _show_whitespace
 {
     my $string = shift;
-    $string =~ s/\n/[\\n]/g;
-    $string =~ s/\r/[\\r]/g;
+    $string =~ s/\012/[\\012]/g;
+    $string =~ s/\015/[\\015]/g;
     $string =~ s/\t/[\\t]/g;
     $string =~ s/ /[\\s]/g;
     return $string;
