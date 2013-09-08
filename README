@@ -1,9 +1,9 @@
 
 
 This archive contains the distribution Dist-Zilla-Plugin-Test-Compile,
-version 2.026:
+version 2.027:
 
-  common tests to check syntax of your modules
+  common tests to check syntax of your modules, only using core modules
 
 This software is copyright (c) 2009 by Jerome Quelin.
 
