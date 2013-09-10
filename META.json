@@ -72,6 +72,7 @@
             "Test::DZil" : "0",
             "Test::MinimumVersion" : "0",
             "Test::More" : "0.94",
+            "Test::Warnings" : "0",
             "if" : "0",
             "version" : "0"
          }
@@ -80,7 +81,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.028"
+         "version" : "2.029"
       }
    },
    "release_status" : "stable",
@@ -97,7 +98,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.028",
+   "version" : "2.029",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019003"

@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.029     2013-09-10 01:19:46Z (Karen Etheridge)
+ - fix test failures for non-authors (oops)
+
 2.028     2013-09-10 01:12:53Z (Karen Etheridge)
  - fix binmode issue on win32 (introduced in 2.026)
  - warnings tests bypassed during installation, to prevent installation issues

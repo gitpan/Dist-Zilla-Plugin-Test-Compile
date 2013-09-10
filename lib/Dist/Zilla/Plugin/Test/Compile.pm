@@ -15,7 +15,7 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.028';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.029';
 }
 # ABSTRACT: common tests to check syntax of your modules, only using core modules
 
@@ -192,7 +192,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.028
+version 2.029
 
 =head1 SYNOPSIS
 

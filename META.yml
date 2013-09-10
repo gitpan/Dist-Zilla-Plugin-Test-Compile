@@ -12,6 +12,7 @@ build_requires:
   Test::DZil: 0
   Test::MinimumVersion: 0
   Test::More: 0.94
+  Test::Warnings: 0
   if: 0
   version: 0
 configure_requires:
@@ -32,7 +33,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.028
+    version: 2.029
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -55,7 +56,7 @@ resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-Compile/
   repository: git://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.028
+version: 2.029
 x_Dist_Zilla:
   perl:
     version: 5.019003
