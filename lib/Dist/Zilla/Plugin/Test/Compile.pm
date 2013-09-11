@@ -15,7 +15,7 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.029';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.030';
 }
 # ABSTRACT: common tests to check syntax of your modules, only using core modules
 
@@ -192,7 +192,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.029
+version 2.030
 
 =head1 SYNOPSIS
 
@@ -269,7 +269,7 @@ This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
 modules to check.  The default value is C<:InstallModules>; this option can be
 used more than once.  .pod files are always omitted.
 
-Other pre-defined finders are listed in
+Other predefined finders are listed in
 L<Dist::Zilla::Role::FileFinderUser/default_finders>.
 You can define your own with the
 L<[FileFinder::ByName]|Dist::Zilla::Plugin::FileFinder::ByName> plugin.
