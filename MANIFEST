@@ -19,11 +19,6 @@ t/03-taint.t
 t/04-bash.t
 t/05-prereqs.t
 t/06-filename.t
-t/test-compile/bin/foobar
-t/test-compile/dist.ini
-t/test-compile/lib/Bar.pod
-t/test-compile/lib/Baz/Quz.pm
-t/test-compile/lib/Foo.pm
 weaver.ini
 xt/author/pod-spell.t
 xt/author/test-eol.t

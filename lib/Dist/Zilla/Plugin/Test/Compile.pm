@@ -15,7 +15,7 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.030';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.031';
 }
 # ABSTRACT: common tests to check syntax of your modules, only using core modules
 
@@ -192,7 +192,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.030
+version 2.031
 
 =head1 SYNOPSIS
 
@@ -427,7 +427,7 @@ for my $lib (@module_files)
     my $stdin = '';     # converted to a gensym by open3
     my $stderr = IO::Handle->new;
 
-    my $pid = open3($stdin, '>&STDERR', $stderr, qq{$^X -Mblib -e"require q[$lib]"});
+    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, '-Mblib', '-e', "require q[$lib]");
     binmode $stderr, ':crlf' if $^O; # eq 'MSWin32';
     waitpid($pid, 0);
     is($? >> 8, 0, "$lib loaded ok");
@@ -449,12 +449,12 @@ foreach my $file (@scripts)
     my $line = <$fh>;
     close $fh and skip("$file isn't perl", 1) unless $line =~ /^#!.*?\bperl\b\s*(.*)$/;
 
-    my $flags = $1;
+    my @flags = $1 ? split(/\s+/, $1) : ();
 
     my $stdin = '';     # converted to a gensym by open3
     my $stderr = IO::Handle->new;
 
-    my $pid = open3($stdin, '>&STDERR', $stderr, qq{$^X -Mblib $flags -c $file});
+    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, '-Mblib', @flags, '-c', $file);
     binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     waitpid($pid, 0);
     is($? >> 8, 0, "$file compiled ok");

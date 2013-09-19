@@ -2,8 +2,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use Test::Warnings 0.009 ':no_end_test', 'warning';
-use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
+use Test::Warnings ':no_end_test', ':all';
 use Test::DZil;
 use Path::Tiny;
 use Cwd;
@@ -58,8 +57,9 @@ like(
     'warnings from compiling LittleKaboom are captured',
 ) or diag 'got warning(s): ', explain($warning);
 
-is($files_tested, 1, 'correct number of files were tested (no warning checks');
+is($files_tested, 1, 'correct number of files were tested (no warning checks)');
 
 chdir $cwd;
 
+had_no_warnings if $ENV{AUTHOR_TESTING};
 done_testing;
