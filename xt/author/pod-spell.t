@@ -18,6 +18,9 @@ azawawi
 Chris
 Weyl
 cweyl
+David
+Golden
+dagolden
 Graham
 Knop
 haarg
@@ -56,4 +59,3 @@ Zilla
 Plugin
 Test
 Compile
-Conflicts

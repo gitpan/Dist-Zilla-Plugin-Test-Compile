@@ -1,6 +1,7 @@
 AUTHOR_PLEDGE
 Build.PL
 Changes
+INSTALL
 LICENSE
 MANIFEST
 MANIFEST.SKIP
@@ -21,11 +22,13 @@ t/05-prereqs.t
 t/06-filename.t
 weaver.ini
 xt/author/pod-spell.t
-xt/author/test-eol.t
 xt/release/changes_has_content.t
 xt/release/cpan-changes.t
 xt/release/distmeta.t
+xt/release/eol.t
+xt/release/kwalitee.t
 xt/release/minimum-version.t
+xt/release/no-tabs.t
 xt/release/pod-coverage.t
 xt/release/pod-no404s.t
 xt/release/pod-syntax.t
