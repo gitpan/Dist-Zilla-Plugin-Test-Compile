@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.034     2013-10-06 06:24:12Z (Karen Etheridge)
+ - now checking the full, unshifted value of $? (thanks, ribasushi!)
+ - fixed incomplete prerequisite specification on Test::Warnings
+
 2.033     2013-09-20 23:52:40Z (Karen Etheridge)
  - revert to IPC::Open3 implementation from v2.031 and earlier, but with
    waitpid ordering fixed so we never hang (thanks haarg!)
@@ -17,7 +21,7 @@ Revision history for Dist-Zilla-Plugin-Test-Compile
  - bypass cmd.exe on win32 to try to avoid occasional hang issue (RT#88783)
 
 2.030     2013-09-11 05:01:26Z (Karen Etheridge)
- - depend on fixed Test::Warning, where ':no_end_tests' also covers the
+ - depend on fixed Test::Warnings, where ':no_end_tests' also covers the
    done_testing case (which turned out to be a red herring)
 
 2.029     2013-09-10 01:19:46Z (Karen Etheridge)

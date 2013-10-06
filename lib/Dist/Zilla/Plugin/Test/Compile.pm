@@ -15,9 +15,9 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.033';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.034';
 }
-# git description: v2.032-9-g57a7633
+# git description: v2.033-8-g6ed03a1
 
 # ABSTRACT: common tests to check syntax of your modules, only using core modules
 
@@ -182,7 +182,7 @@ __PACKAGE__->meta->make_immutable;
 
 =pod
 
-=encoding utf-8
+=encoding ISO-8859-1
 
 =for :stopwords Jerome Quelin Ahmad Pig Jesse Luehrs Karen Etheridge Kent Fredric Marcel M.
 Gruenauer Olivier Mengué Peter Shangov Randy Stauner Ricardo SIGNES fayland
@@ -195,7 +195,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.033
+version 2.034
 
 =head1 SYNOPSIS
 
@@ -439,7 +439,7 @@ for my $lib (@module_files)
     binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
-    is($? >> 8, 0, "$lib loaded ok");
+    is($?, 0, "$lib loaded ok");
 
     if (@_warnings)
     {
@@ -466,7 +466,7 @@ foreach my $file (@scripts)
     binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
-    is($? >> 8, 0, "$file compiled ok");
+    is($?, 0, "$file compiled ok");
 
    # in older perls, -c output is simply the file portion of the path being tested
     if (@_warnings = grep { !/\bsyntax OK$/ }

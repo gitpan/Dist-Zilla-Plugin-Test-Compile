@@ -1,5 +1,5 @@
 use 5.008;
-use Module::Build::Tiny 0.027;
+use Module::Build::Tiny 0.028;
 check_conflicts();
 Build_PL();
 
