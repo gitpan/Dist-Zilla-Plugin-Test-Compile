@@ -32,6 +32,9 @@
          "conflicts" : {
             "Dist::Zilla::Plugin::Conflicts" : "== 0.11"
          },
+         "recommends" : {
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.029"
+         },
          "requires" : {
             "Dist::Zilla" : "4.300039",
             "Dist::Zilla::Plugin::Conflicts" : ">= 0, != 0.11",
@@ -80,7 +83,6 @@
             "List::Util" : "0",
             "Module::CoreList" : "2.77",
             "Perl::PrereqScanner" : "1.016",
-            "Test::CheckDeps" : "0.007",
             "Test::DZil" : "0",
             "Test::Deep" : "0",
             "Test::Deep::JSON" : "0",
@@ -95,7 +97,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.035"
+         "version" : "2.036"
       }
    },
    "release_status" : "stable",
@@ -112,7 +114,7 @@
       },
       "x_MailingList" : "http://www.listbox.com/subscribe/?list_id=139292"
    },
-   "version" : "2.035",
+   "version" : "2.036",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019004"
@@ -209,9 +211,16 @@
             "version" : "4.300039"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
-            "name" : "@Author::ETHER/Test::CheckDeps",
-            "version" : "0.009"
+            "class" : "Dist::Zilla::Plugin::GenerateFile::ShareDir",
+            "config" : {
+               "Dist::Zilla::Plugin::GenerateFile::ShareDir" : {
+                  "destination_filename" : "CONTRIBUTING",
+                  "dist" : "Dist-Zilla-PluginBundle-Author-ETHER",
+                  "source_filename" : "CONTRIBUTING"
+               }
+            },
+            "name" : "@Author::ETHER/GenerateFile::ShareDir",
+            "version" : "0.001"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::NoTabs",
@@ -402,6 +411,22 @@
             "version" : "4.300039"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "develop",
+                  "type" : "recommends"
+               }
+            },
+            "name" : "@Author::ETHER/pluginbundle_version",
+            "version" : "4.300039"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::RunExtraTests",
+            "name" : "@Author::ETHER/RunExtraTests",
+            "version" : "0.011"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::ReadmeAnyFromPod",
             "name" : "@Author::ETHER/ReadmeAnyFromPod",
             "version" : "0.131500"
@@ -430,11 +455,6 @@
             "class" : "Dist::Zilla::Plugin::Run::AfterBuild",
             "name" : "@Author::ETHER/Run::AfterBuild",
             "version" : "0.020"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::RunExtraTests",
-            "name" : "@Author::ETHER/RunExtraTests",
-            "version" : "0.011"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Check",

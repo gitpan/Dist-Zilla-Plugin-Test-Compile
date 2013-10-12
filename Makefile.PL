@@ -81,7 +81,6 @@ my %WriteMakefileArgs = (
     "List::Util" => 0,
     "Module::CoreList" => "2.77",
     "Perl::PrereqScanner" => "1.016",
-    "Test::CheckDeps" => "0.007",
     "Test::DZil" => 0,
     "Test::Deep" => 0,
     "Test::Deep::JSON" => 0,
@@ -91,7 +90,7 @@ my %WriteMakefileArgs = (
     "if" => 0,
     "version" => 0
   },
-  "VERSION" => "2.035",
+  "VERSION" => "2.036",
   "test" => {
     "TESTS" => "t/*.t"
   }

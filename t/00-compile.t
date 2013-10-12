@@ -18,6 +18,8 @@ my @scripts = (
 
 # no fake home requested
 
+my $inc_switch = q[-Mblib];
+
 use File::Spec;
 use IPC::Open3;
 use IO::Handle;
@@ -29,7 +31,7 @@ for my $lib (@module_files)
     open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
     my $stderr = IO::Handle->new;
 
-    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, '-Mblib', '-e', "require q[$lib]");
+    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, '-e', "require q[$lib]");
     binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);

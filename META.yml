@@ -12,7 +12,6 @@ build_requires:
   List::Util: 0
   Module::CoreList: 2.77
   Perl::PrereqScanner: 1.016
-  Test::CheckDeps: 0.007
   Test::DZil: 0
   Test::Deep: 0
   Test::Deep::JSON: 0
@@ -40,7 +39,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.035
+    version: 2.036
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -63,7 +62,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile.git
-version: 2.035
+version: 2.036
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -139,9 +138,14 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Manifest'
       version: 4.300039
     -
-      class: Dist::Zilla::Plugin::Test::CheckDeps
-      name: '@Author::ETHER/Test::CheckDeps'
-      version: 0.009
+      class: Dist::Zilla::Plugin::GenerateFile::ShareDir
+      config:
+        Dist::Zilla::Plugin::GenerateFile::ShareDir:
+          destination_filename: CONTRIBUTING
+          dist: Dist-Zilla-PluginBundle-Author-ETHER
+          source_filename: CONTRIBUTING
+      name: '@Author::ETHER/GenerateFile::ShareDir'
+      version: 0.001
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -289,6 +293,18 @@ x_Dist_Zilla:
       name: '@Author::ETHER/installer_requirements'
       version: 4.300039
     -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: recommends
+      name: '@Author::ETHER/pluginbundle_version'
+      version: 4.300039
+    -
+      class: Dist::Zilla::Plugin::RunExtraTests
+      name: '@Author::ETHER/RunExtraTests'
+      version: 0.011
+    -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
       version: 0.131500
@@ -312,10 +328,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Run::AfterBuild
       name: '@Author::ETHER/Run::AfterBuild'
       version: 0.020
-    -
-      class: Dist::Zilla::Plugin::RunExtraTests
-      name: '@Author::ETHER/RunExtraTests'
-      version: 0.011
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Author::ETHER/Git::Check'

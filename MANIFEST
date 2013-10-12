@@ -1,5 +1,6 @@
 AUTHOR_PLEDGE
 Build.PL
+CONTRIBUTING
 Changes
 INSTALL
 LICENSE
@@ -13,7 +14,6 @@ dist.ini
 examples/dist.ini
 lib/Dist/Zilla/Plugin/Test/Compile.pm
 lib/Dist/Zilla/Plugin/Test/Compile/Conflicts.pm
-t/00-check-deps.t
 t/00-compile.t
 t/00-report-prereqs.t
 t/01-basic.t
@@ -23,6 +23,7 @@ t/04-bash.t
 t/05-prereqs.t
 t/06-filename.t
 t/07-prereqs-phase.t
+t/08-xt_mode.t
 weaver.ini
 xt/author/pod-spell.t
 xt/release/changes_has_content.t

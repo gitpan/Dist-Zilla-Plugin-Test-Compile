@@ -42,7 +42,6 @@ my @modules = qw(
   Path::Tiny
   Perl::PrereqScanner
   Sub::Exporter::ForMethods
-  Test::CheckDeps
   Test::DZil
   Test::Deep
   Test::Deep::JSON
