@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.035     2013-10-12 17:35:49Z (Karen Etheridge)
+ - new "phase" option, for selecting how prereqs are injected (thanks, David
+   Golden!)
+
 2.034     2013-10-06 06:24:12Z (Karen Etheridge)
  - now checking the full, unshifted value of $? (thanks, ribasushi!)
  - fixed incomplete prerequisite specification on Test::Warnings

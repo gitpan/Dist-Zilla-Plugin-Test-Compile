@@ -14,6 +14,8 @@ build_requires:
   Perl::PrereqScanner: 1.016
   Test::CheckDeps: 0.007
   Test::DZil: 0
+  Test::Deep: 0
+  Test::Deep::JSON: 0
   Test::MinimumVersion: 0
   Test::More: 0.94
   Test::Warnings: 0.009
@@ -22,9 +24,9 @@ build_requires:
 configure_requires:
   Dist::CheckConflicts: 0.02
   ExtUtils::MakeMaker: 6.30
-  Module::Build::Tiny: 0.028
+  Module::Build::Tiny: 0.030
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132620'
+generated_by: 'Dist::Zilla version 4.300039, CPAN::Meta::Converter version 2.132830'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -38,7 +40,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.034
+    version: 2.035
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -59,9 +61,9 @@ requires:
 resources:
   MailingList: http://www.listbox.com/subscribe/?list_id=139292
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
-  homepage: https://github.com/karenetheridge/dist-zilla-plugin-test-compile
-  repository: https://github.com/karenetheridge/dist-zilla-plugin-test-compile.git
-version: 2.034
+  homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile
+  repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile.git
+version: 2.035
 x_Dist_Zilla:
   perl:
     version: 5.019004
@@ -80,6 +82,7 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::Compile
       config:
         Dist::Zilla::Plugin::Test::Compile:
+          filename: t/00-compile.t
           module_finder:
             - ':InstallModules'
           script_finder:
@@ -94,11 +97,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.007
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.007
+      version: 0.008
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -149,7 +152,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::NoTabs'
-      version: 0.04
+      version: 0.05
     -
       class: Dist::Zilla::Plugin::EOLTests
       name: '@Author::ETHER/EOLTests'
@@ -205,7 +208,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::ReportPrereqs
       name: '@Author::ETHER/Test::ReportPrereqs'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Author::ETHER/PruneCruft'

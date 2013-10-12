@@ -48,7 +48,7 @@ my %WriteMakefileArgs = (
   "CONFIGURE_REQUIRES" => {
     "Dist::CheckConflicts" => "0.02",
     "ExtUtils::MakeMaker" => "6.30",
-    "Module::Build::Tiny" => "0.028"
+    "Module::Build::Tiny" => "0.030"
   },
   "DISTNAME" => "Dist-Zilla-Plugin-Test-Compile",
   "EXE_FILES" => [],
@@ -83,13 +83,15 @@ my %WriteMakefileArgs = (
     "Perl::PrereqScanner" => "1.016",
     "Test::CheckDeps" => "0.007",
     "Test::DZil" => 0,
+    "Test::Deep" => 0,
+    "Test::Deep::JSON" => 0,
     "Test::MinimumVersion" => 0,
     "Test::More" => "0.94",
     "Test::Warnings" => "0.009",
     "if" => 0,
     "version" => 0
   },
-  "VERSION" => "2.034",
+  "VERSION" => "2.035",
   "test" => {
     "TESTS" => "t/*.t"
   }

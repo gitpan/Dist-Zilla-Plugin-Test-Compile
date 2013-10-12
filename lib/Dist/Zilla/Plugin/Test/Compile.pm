@@ -15,9 +15,9 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.034';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.035';
 }
-# git description: v2.033-8-g6ed03a1
+# git description: v2.034-5-gf838562
 
 # ABSTRACT: common tests to check syntax of your modules, only using core modules
 
@@ -55,6 +55,7 @@ has fail_on_warning => ( is=>'ro', isa=>enum([qw(none author all)]), default=>'a
 has bail_out_on_fail => ( is=>'ro', isa=>'Bool', default=>0 );
 
 has filename => ( is => 'ro', isa => 'Str', default => 't/00-compile.t' );
+has phase => ( is => 'ro', isa => 'Str', default => 'test' );
 
 sub mvp_multivalue_args { qw(skips) }
 sub mvp_aliases { return { skip => 'skips' } }
@@ -98,6 +99,7 @@ around dump_config => sub
     $config->{'' . __PACKAGE__} = {
          module_finder => $self->module_finder,
          script_finder => $self->script_finder,
+         filename => $self->filename,
     };
     return $config;
 };
@@ -105,12 +107,13 @@ around dump_config => sub
 sub register_prereqs
 {
     my $self = shift;
-    # TODO: what if we install somewhere other than t/ ?
-    # maybe we need to also be told what phase to use.
+
+    return unless $self->phase;
+
     $self->zilla->register_prereqs(
         {
             type  => 'requires',
-            phase => 'test',
+            phase => $self->phase,
         },
         'Test::More' => $self->_test_more_version,
         'File::Spec' => '0',
@@ -195,7 +198,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.034
+version 2.035
 
 =head1 SYNOPSIS
 
@@ -210,7 +213,7 @@ In your F<dist.ini>:
 
 =head1 DESCRIPTION
 
-This is a plugin that runs at the L<gather files|Dist::Zilla::Role::FileGatherer> stage,
+This is a L<Dist::Zilla> plugin that runs at the L<gather files|Dist::Zilla::Role::FileGatherer> stage,
 providing a test file (configurable, defaulting to F<t/00-compile.t>).
 
 This test will find all modules and scripts in your dist, and try to
@@ -228,6 +231,10 @@ This plugin accepts the following options:
 
 =item * C<filename>: the name of the generated file. Defaults to
 F<t/00-compile.t>.
+
+=item * C<phase>: the phase for which to register prerequisites. Defaults
+to C<test>.  Setting this to a false value will disable prerequisite
+registration.
 
 =item * C<skip>: a regex to skip compile test for modules matching it. The
 match is done against the module name (C<Foo::Bar>), not the file path
