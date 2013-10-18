@@ -15,9 +15,9 @@ BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.036';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.037';
 }
-# git description: v2.035-4-ga257579
+# git description: v2.036-3-g9fb6857
 
 # ABSTRACT: common tests to check syntax of your modules, only using core modules
 
@@ -184,7 +184,6 @@ sub munge_file
                 needs_display => \($self->needs_display),
                 bail_out_on_fail => \($self->bail_out_on_fail),
                 fail_on_warning => \($self->fail_on_warning),
-                xt_mode => \($self->xt_mode),
             }
         )
     );
@@ -209,7 +208,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.036
+version 2.037
 
 =head1 SYNOPSIS
 
@@ -304,8 +303,7 @@ files are properly marked as executables for the installer).
 =item * C<xt_mode>
 
 When true, the default C<filename> becomes F<xt/author/00-compile.t> and the
-default C<dependency> phase becomes C<develop>. The test is adjusted to
-run against F<lib> instead of F<blib>.
+default C<dependency> phase becomes C<develop>.
 
 =back
 
@@ -448,7 +446,7 @@ CODE
     : '# no fake home requested';
 }}
 
-my $inc_switch = q[{{ $xt_mode ? '-Ilib' : '-Mblib' }}];
+my $inc_switch = -d 'blib' ? '-Mblib' : '-Ilib';
 
 use File::Spec;
 use IPC::Open3;
@@ -488,7 +486,7 @@ foreach my $file (@scripts)
     open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
     my $stderr = IO::Handle->new;
 
-    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, '-Mblib', @flags, '-c', $file);
+    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, @flags, '-c', $file);
     binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
@@ -498,21 +496,10 @@ foreach my $file (@scripts)
     if (@_warnings = grep { !/\bsyntax OK$/ }
         grep { chomp; $_ ne (File::Spec->splitpath($file))[2] } @_warnings)
     {
-        # temporary measure - win32 newline issues?
-        warn map { _show_whitespace($_) } @_warnings;
+        warn @_warnings;
         push @warnings, @_warnings;
     }
 } }
-
-sub _show_whitespace
-{
-    my $string = shift;
-    $string =~ s/\012/[\\012]/g;
-    $string =~ s/\015/[\\015]/g;
-    $string =~ s/\t/[\\t]/g;
-    $string =~ s/ /[\\s]/g;
-    return $string;
-}
 
 CODE
     : '';

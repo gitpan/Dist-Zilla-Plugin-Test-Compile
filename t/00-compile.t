@@ -18,7 +18,7 @@ my @scripts = (
 
 # no fake home requested
 
-my $inc_switch = q[-Mblib];
+my $inc_switch = -d 'blib' ? '-Mblib' : '-Ilib';
 
 use File::Spec;
 use IPC::Open3;
@@ -55,7 +55,7 @@ foreach my $file (@scripts)
     open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
     my $stderr = IO::Handle->new;
 
-    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, '-Mblib', @flags, '-c', $file);
+    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, @flags, '-c', $file);
     binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
@@ -65,21 +65,10 @@ foreach my $file (@scripts)
     if (@_warnings = grep { !/\bsyntax OK$/ }
         grep { chomp; $_ ne (File::Spec->splitpath($file))[2] } @_warnings)
     {
-        # temporary measure - win32 newline issues?
-        warn map { _show_whitespace($_) } @_warnings;
+        warn @_warnings;
         push @warnings, @_warnings;
     }
 } }
-
-sub _show_whitespace
-{
-    my $string = shift;
-    $string =~ s/\012/[\\012]/g;
-    $string =~ s/\015/[\\015]/g;
-    $string =~ s/\t/[\\t]/g;
-    $string =~ s/ /[\\s]/g;
-    return $string;
-}
 
 
 
