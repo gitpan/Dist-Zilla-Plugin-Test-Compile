@@ -10,6 +10,7 @@ META.json
 META.yml
 Makefile.PL
 README
+README.md
 dist.ini
 examples/dist.ini
 lib/Dist/Zilla/Plugin/Test/Compile.pm
@@ -24,6 +25,7 @@ t/05-prereqs.t
 t/06-filename.t
 t/07-prereqs-phase.t
 t/08-xt_mode.t
+t/09-extra-files.t
 weaver.ini
 xt/author/pod-spell.t
 xt/release/changes_has_content.t
@@ -37,5 +39,6 @@ xt/release/no-tabs.t
 xt/release/pod-coverage.t
 xt/release/pod-no404s.t
 xt/release/pod-syntax.t
+xt/release/portability.t
 xt/release/test-version.t
 xt/release/unused-vars.t

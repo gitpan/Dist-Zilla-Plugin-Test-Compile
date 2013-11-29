@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use warnings;
 
@@ -24,15 +25,16 @@ use File::Spec;
 use IPC::Open3;
 use IO::Handle;
 
+open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
+my $stderr = IO::Handle->new;
+binmode $stderr, ':crlf' if $^O eq 'MSWin32';
+
 my @warnings;
 for my $lib (@module_files)
 {
     # see L<perlfaq8/How can I capture STDERR from an external command?>
-    open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
-    my $stderr = IO::Handle->new;
 
     my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, '-e', "require q[$lib]");
-    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
     is($?, 0, "$lib loaded ok");
@@ -52,11 +54,7 @@ foreach my $file (@scripts)
 
     my @flags = $1 ? split(/\s+/, $1) : ();
 
-    open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
-    my $stderr = IO::Handle->new;
-
     my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, @flags, '-c', $file);
-    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
     is($?, 0, "$file compiled ok");
