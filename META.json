@@ -111,7 +111,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.038"
+         "version" : "2.039"
       }
    },
    "release_status" : "stable",
@@ -129,7 +129,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "2.038",
+   "version" : "2.039",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019006"
@@ -485,11 +485,6 @@
                         "class" : "Pod::Weaver::Plugin::StopWords",
                         "name" : "-StopWords",
                         "version" : "1.008"
-                     },
-                     {
-                        "class" : "Pod::Weaver::Plugin::Encoding",
-                        "name" : "-Encoding",
-                        "version" : "0.02"
                      },
                      {
                         "class" : "Pod::Weaver::Section::Contributors",

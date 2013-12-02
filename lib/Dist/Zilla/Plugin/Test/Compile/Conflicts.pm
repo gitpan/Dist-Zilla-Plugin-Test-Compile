@@ -40,7 +40,7 @@ Dist::Zilla::Plugin::Test::Compile::Conflicts - Provide information on conflicts
 
 =head1 VERSION
 
-version 2.038
+version 2.039
 
 =head1 AUTHOR
 

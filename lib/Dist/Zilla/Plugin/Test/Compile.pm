@@ -12,9 +12,9 @@ use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
 {
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.038';
+  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.039';
 }
-# git description: v2.037-9-g7fa387e
+# git description: v2.038-3-gf5d6375
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
@@ -74,6 +74,7 @@ has skips => (
     isa => 'ArrayRef[Str]',
     traits => ['Array'],
     handles => { skips => 'elements' },
+    lazy => 1,
     default => sub { [] },
 );
 
@@ -81,6 +82,7 @@ has files => (
     isa => 'ArrayRef[Str]',
     traits => ['Array'],
     handles => { files => 'elements' },
+    lazy => 1,
     default => sub { [] },
 );
 
@@ -219,7 +221,7 @@ Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.038
+version 2.039
 
 =head1 SYNOPSIS
 
@@ -473,15 +475,15 @@ use IPC::Open3;
 use IO::Handle;
 
 open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
-my $stderr = IO::Handle->new;
-binmode $stderr, ':crlf' if $^O eq 'MSWin32';
 
 my @warnings;
 for my $lib (@module_files)
 {
     # see L<perlfaq8/How can I capture STDERR from an external command?>
+    my $stderr = IO::Handle->new;
 
     my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, '-e', "require q[$lib]");
+    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
     is($?, 0, "$lib loaded ok");
@@ -504,7 +506,10 @@ foreach my $file (@scripts)
 
     my @flags = $1 ? split(/\s+/, $1) : ();
 
+    my $stderr = IO::Handle->new;
+
     my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, @flags, '-c', $file);
+    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
     my @_warnings = <$stderr>;
     waitpid($pid, 0);
     is($?, 0, "$file compiled ok");

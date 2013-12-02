@@ -39,7 +39,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: 2.038
+    version: 2.039
 requires:
   Data::Section: 0.004
   Dist::CheckConflicts: 0.02
@@ -63,7 +63,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile.git
-version: 2.038
+version: 2.039
 x_Dist_Zilla:
   perl:
     version: 5.019006
@@ -345,10 +345,6 @@ x_Dist_Zilla:
               class: Pod::Weaver::Plugin::StopWords
               name: '-StopWords'
               version: 1.008
-            -
-              class: Pod::Weaver::Plugin::Encoding
-              name: '-Encoding'
-              version: 0.02
             -
               class: Pod::Weaver::Section::Contributors
               name: Contributors
