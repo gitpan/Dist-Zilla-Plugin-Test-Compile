@@ -4,13 +4,12 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::Compile <self>
 
-use Test::More 0.94 tests => 3 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More 0.94 tests => 2 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
 my @module_files = (
-    'Dist/Zilla/Plugin/Test/Compile.pm',
-    'Dist/Zilla/Plugin/Test/Compile/Conflicts.pm'
+    'Dist/Zilla/Plugin/Test/Compile.pm'
 );
 
 my @scripts = (

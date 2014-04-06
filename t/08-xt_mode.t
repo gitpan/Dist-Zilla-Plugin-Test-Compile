@@ -5,13 +5,13 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
-use Cwd;
+use File::pushd 'pushd';
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
     {
         add_files => {
-            'source/dist.ini' => simple_ini(
+            path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
                 [ 'Test::Compile' => { fail_on_warning => 'none', xt_mode => 1 } ],
             ),
@@ -22,16 +22,15 @@ my $tzil = Builder->from_config(
 
 $tzil->build;
 
-my $build_dir = $tzil->tempdir->subdir('build');
-ok(!-e path($build_dir, 't', '00-compile.t'), 'default test not created');
-my $file = path($build_dir, 'xt', 'author', '00-compile.t');
+my $build_dir = path($tzil->tempdir)->child('build');
+ok(!-e $build_dir->child(qw(t 00-compile.t)), 'default test not created');
+my $file = $build_dir->child(qw(xt author 00-compile.t));
 ok(-e $file, 'test created using new name');
 
-my $cwd = getcwd;
 my $files_tested;
 subtest 'run the generated test' => sub
 {
-    chdir $build_dir;
+    my $wd = pushd $build_dir;
     # intentionally not running Makefile.PL...
 
     do $file;
@@ -41,7 +40,5 @@ subtest 'run the generated test' => sub
 };
 
 is($files_tested, 1, 'correct number of files were tested');
-
-chdir $cwd;
 
 done_testing;

@@ -11,15 +11,13 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
-{
-  $Dist::Zilla::Plugin::Test::Compile::VERSION = '2.039';
-}
-# git description: v2.038-3-gf5d6375
-
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
-# ABSTRACT: common tests to check syntax of your modules, only using core modules
+# git description: v2.039-11-g85981bc
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.040';
+# ABSTRACT: Common tests to check syntax of your modules, only using core modules
+# vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
 use Path::Tiny;
@@ -115,7 +113,7 @@ around dump_config => sub
     my ($orig, $self) = @_;
     my $config = $self->$orig;
 
-    $config->{'' . __PACKAGE__} = {
+    $config->{+__PACKAGE__} = {
          module_finder => $self->module_finder,
          script_finder => $self->script_finder,
          filename => $self->filename,
@@ -206,6 +204,134 @@ sub munge_file
 
 __PACKAGE__->meta->make_immutable;
 
+#pod =pod
+#pod
+#pod =for Pod::Coverage::TrustPod
+#pod     mvp_multivalue_args
+#pod     mvp_aliases
+#pod     register_prereqs
+#pod     gather_files
+#pod     munge_file
+#pod
+#pod
+#pod =head1 SYNOPSIS
+#pod
+#pod In your F<dist.ini>:
+#pod
+#pod     [Test::Compile]
+#pod     skip      = Test$
+#pod     fake_home = 1
+#pod     needs_display = 1
+#pod     fail_on_warning = author
+#pod     bail_out_on_fail = 1
+#pod
+#pod
+#pod =head1 DESCRIPTION
+#pod
+#pod This is a L<Dist::Zilla> plugin that runs at the L<gather files|Dist::Zilla::Role::FileGatherer> stage,
+#pod providing a test file (configurable, defaulting to F<t/00-compile.t>).
+#pod
+#pod This test will find all modules and scripts in your distribution, and try to
+#pod compile them one by one. This means it's a bit slower than loading them
+#pod all at once, but it will catch more errors.
+#pod
+#pod The generated test is guaranteed to only depend on modules that are available
+#pod in core.  Most options only require perl 5.6.2; the C<bail_out_on_fail> option
+#pod requires the version of L<Test::More> that shipped with perl 5.12 (but the
+#pod test still runs on perl 5.6).
+#pod
+#pod This plugin accepts the following options:
+#pod
+#pod =over 4
+#pod
+#pod =item * C<filename>: the name of the generated file. Defaults to
+#pod F<t/00-compile.t>.
+#pod
+#pod =item * C<phase>: the phase for which to register prerequisites. Defaults
+#pod to C<test>.  Setting this to a false value will disable prerequisite
+#pod registration.
+#pod
+#pod =item * C<skip>: a regex to skip compile test for B<modules> matching it. The
+#pod match is done against the module name (C<Foo::Bar>), not the file path
+#pod (F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
+#pod
+#pod =item * C<file>: a filename to also test, in addition to any files found
+#pod earlier.  It will be tested as a module if it ends with C<.pm> or C<.PM>,
+#pod and as a script otherwise.
+#pod Module filenames should be relative to F<lib>; others should be relative to
+#pod the base of the repository.
+#pod This option can be repeated to specify multiple additional files.
+#pod
+#pod =for stopwords cpantesters
+#pod
+#pod =item * C<fake_home>: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
+#pod This may be needed if your module unilaterally creates stuff in the user's home directory:
+#pod indeed, some cpantesters will smoke test your distribution with a read-only home
+#pod directory. Defaults to false.
+#pod
+#pod =item * C<needs_display>: a boolean to indicate whether to skip the compile test
+#pod on non-Win32 systems when C<< $ENV{DISPLAY} >> is not set. Defaults to false.
+#pod
+#pod =item * C<fail_on_warning>: a string to indicate when to add a test for
+#pod warnings during compilation checks. Possible values are:
+#pod
+#pod =over 4
+#pod
+#pod =item * C<none>: do not test for warnings
+#pod
+#pod =item * C<author>: test for warnings only when AUTHOR_TESTING is set
+#pod (default, and recommended)
+#pod
+#pod =item * C<all>: always test for warnings (not recommended, as this can prevent
+#pod installation of modules when upstream dependencies exhibit warnings in a new
+#pod Perl release)
+#pod
+#pod =back
+#pod
+#pod =item * C<bail_out_on_fail>: a boolean to indicate whether the test will BAIL_OUT
+#pod of all subsequent tests when compilation failures are encountered. Defaults to false.
+#pod
+#pod =item * C<module_finder>
+#pod
+#pod =for stopwords FileFinder
+#pod
+#pod This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
+#pod modules to check.  The default value is C<:InstallModules>; this option can be
+#pod used more than once.  .pod files are always omitted.
+#pod
+#pod Other predefined finders are listed in
+#pod L<Dist::Zilla::Role::FileFinderUser/default_finders>.
+#pod You can define your own with the
+#pod L<[FileFinder::ByName]|Dist::Zilla::Plugin::FileFinder::ByName> and
+#pod L<[FileFinder::Filter]|Dist::Zilla::Plugin::FileFinder::Filter> plugins.
+#pod
+#pod =item * C<script_finder>
+#pod
+#pod =for stopwords executables
+#pod
+#pod Just like C<module_finder>, but for finding scripts.  The default value is
+#pod C<:ExecFiles> (see also L<Dist::Zilla::Plugin::ExecDir>, to make sure these
+#pod files are properly marked as executables for the installer).
+#pod
+#pod =item * C<xt_mode>
+#pod
+#pod When true, the default C<filename> becomes F<xt/author/00-compile.t> and the
+#pod default C<dependency> phase becomes C<develop>.
+#pod
+#pod =back
+#pod
+#pod =head1 SEE ALSO
+#pod
+#pod =over 4
+#pod
+#pod =item * L<Test::NeedsDisplay>
+#pod
+#pod =item * L<Test::Script>
+#pod
+#pod =back
+#pod
+#pod =cut
+
 =pod
 
 =encoding UTF-8
@@ -217,11 +343,11 @@ executables
 
 =head1 NAME
 
-Dist::Zilla::Plugin::Test::Compile - common tests to check syntax of your modules, only using core modules
+Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your modules, only using core modules
 
 =head1 VERSION
 
-version 2.039
+version 2.040
 
 =head1 SYNOPSIS
 
@@ -239,7 +365,7 @@ In your F<dist.ini>:
 This is a L<Dist::Zilla> plugin that runs at the L<gather files|Dist::Zilla::Role::FileGatherer> stage,
 providing a test file (configurable, defaulting to F<t/00-compile.t>).
 
-This test will find all modules and scripts in your dist, and try to
+This test will find all modules and scripts in your distribution, and try to
 compile them one by one. This means it's a bit slower than loading them
 all at once, but it will catch more errors.
 
@@ -278,8 +404,8 @@ This option can be repeated to specify multiple additional files.
 
 =item * C<fake_home>: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
 This may be needed if your module unilaterally creates stuff in the user's home directory:
-indeed, some cpantesters will smoke test your dist with a read-only home
-directory. Default to false.
+indeed, some cpantesters will smoke test your distribution with a read-only home
+directory. Defaults to false.
 
 =item * C<needs_display>: a boolean to indicate whether to skip the compile test
 on non-Win32 systems when C<< $ENV{DISPLAY} >> is not set. Defaults to false.

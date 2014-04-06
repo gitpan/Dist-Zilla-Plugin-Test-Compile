@@ -5,14 +5,13 @@ use Test::More;
 use Test::Warnings 0.009 ':no_end_test', ':all';
 use Test::DZil;
 use Path::Tiny;
-use Cwd;
-use Config;
+use File::pushd 'pushd';
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
     {
         add_files => {
-            'source/dist.ini' => simple_ini(
+            path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
                 [ MakeMaker => ],
                 [ ExecDir => ],
@@ -31,19 +30,17 @@ EXECUTABLE
 
 $tzil->build;
 
-my $build_dir = $tzil->tempdir->subdir('build');
-my $file = path($build_dir, 't', '00-compile.t');
+my $build_dir = path($tzil->tempdir)->child('build');
+my $file = $build_dir->child(qw(t 00-compile.t));
 ok(-e $file, 'test created');
 
 # run the tests
 
-my $cwd = getcwd;
 my @warnings = warnings {
     subtest 'run the generated test' => sub
     {
-        chdir $build_dir;
-        system($^X, 'Makefile.PL');
-        system($Config{make});
+        my $wd = pushd $build_dir;
+        $tzil->plugin_named('MakeMaker')->build;
 
         do $file;
         warn $@ if $@;
@@ -52,8 +49,6 @@ my @warnings = warnings {
 
 is(@warnings, 0, "no warnings when a script isn't perl")
     or diag 'got warning(s): ', explain(\@warnings);
-
-chdir $cwd;
 
 had_no_warnings if $ENV{AUTHOR_TESTING};
 done_testing;

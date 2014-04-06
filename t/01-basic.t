@@ -5,8 +5,7 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
-use Cwd;
-use Config;
+use File::pushd 'pushd';
 use Test::Deep;
 use Test::Deep::JSON;
 
@@ -17,12 +16,11 @@ BEGIN {
 }
 
 
-# build fake dist
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
     {
         add_files => {
-            'source/dist.ini' => simple_ini(
+            path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
                 [ MakeMaker => ],
                 [ ExecDir => ],
@@ -49,11 +47,11 @@ FOOBAR
 );
 $tzil->build;
 
-my $build_dir = $tzil->tempdir->subdir('build');
-my $file = path($build_dir, 't', '00-compile.t');
+my $build_dir = path($tzil->tempdir)->child('build');
+my $file = $build_dir->child(qw(t 00-compile.t));
 ok(-e $file, 'test created');
 
-my $content = $file->slurp;
+my $content = $file->slurp_utf8;
 unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 
 my @files = (
@@ -65,7 +63,7 @@ my @files = (
 
 like($content, qr/'\Q$_\E'/m, "test checks $_") foreach @files;
 
-my $json = $tzil->slurp_file('build/META.json');
+my $json = $build_dir->child('META.json')->slurp_utf8;
 cmp_deeply(
     $json,
     json(superhashof({
@@ -86,13 +84,11 @@ cmp_deeply(
     'prereqs are properly injected for the test phase',
 );
 
-my $cwd = getcwd;
 my $files_tested;
 subtest 'run the generated test' => sub
 {
-    chdir $build_dir;
-    system($^X, 'Makefile.PL');
-    system($Config{make});
+    my $wd = pushd $build_dir;
+    $tzil->plugin_named('MakeMaker')->build;
 
     local $ENV{AUTHOR_TESTING} = 1;
     do $file;
@@ -102,7 +98,5 @@ subtest 'run the generated test' => sub
 };
 
 is($files_tested, @files + 1, 'correct number of files were tested, plus warnings checked');
-
-chdir $cwd;
 
 done_testing;
