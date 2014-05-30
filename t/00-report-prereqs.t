@@ -2,7 +2,7 @@
 #
 # This file is part of Dist-Zilla-Plugin-Test-Compile
 #
-# This software is copyright (c) 2009 by Jerome Quelin.
+# This software is copyright (c) 2009 by Jérôme Quelin.
 #
 # This is free software; you can redistribute it and/or modify it under
 # the same terms as the Perl 5 programming language system itself.
@@ -42,7 +42,7 @@ sub _merge_requires {
 }
 
 my %include = map {; $_ => 1 } qw(
-
+  Dist::CheckConflicts
 );
 
 my %exclude = map {; $_ => 1 } qw(
@@ -53,25 +53,24 @@ my %exclude = map {; $_ => 1 } qw(
 my $static_prereqs = do { my $x = {
        'configure' => {
                         'requires' => {
-                                        'ExtUtils::MakeMaker' => '6.30',
-                                        'Module::Build::Tiny' => '0.035'
+                                        'ExtUtils::MakeMaker' => '6.30'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.055'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.064'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.015',
+                                      'Dist::Zilla' => '5.000',
                                       'Dist::Zilla::Plugin::Bootstrap::lib' => '0',
                                       'Dist::Zilla::Plugin::Breaks' => '0',
                                       'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
                                       'Dist::Zilla::Plugin::Covenant' => '0',
+                                      'Dist::Zilla::Plugin::DynamicPrereqs' => '0',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
-                                      'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
+                                      'Dist::Zilla::Plugin::MakeMaker' => '0',
                                       'Dist::Zilla::Plugin::MetaResources' => '0',
-                                      'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
                                       'Dist::Zilla::Plugin::Prepender' => '0',
                                       'Dist::Zilla::Plugin::Prereqs' => '0',
                                       'Dist::Zilla::Plugin::Test::CheckBreaks' => '0',
@@ -84,6 +83,7 @@ my $static_prereqs = do { my $x = {
                                       'Test::CPAN::Meta' => '0',
                                       'Test::CleanNamespaces' => '>= 0.04, != 0.06',
                                       'Test::Kwalitee' => '1.12',
+                                      'Test::Mojibake' => '1.0',
                                       'Test::More' => '0',
                                       'Test::NoTabs' => '0',
                                       'Test::Pod' => '1.41',

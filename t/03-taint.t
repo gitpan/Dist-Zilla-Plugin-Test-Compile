@@ -19,8 +19,8 @@ my $tzil = Builder->from_config(
             ),
             path(qw(source lib Foo.pm)) => "package Foo;\n1;\n",
             path(qw(source bin foo)) => <<'EXECUTABLE',
-#!/usr/bin/perl -wT
-warn 'warning issued when executable is run';
+#!/usr/bin/perl -T
+print "hello world\n";
 EXECUTABLE
         },
     },
@@ -31,8 +31,6 @@ $tzil->build;
 my $build_dir = path($tzil->tempdir)->child('build');
 my $file = $build_dir->child(qw(t 00-compile.t));
 ok( -e $file, 'test created');
-
-# run the tests
 
 my @warnings = warnings {
     subtest 'run the generated test' => sub
@@ -45,7 +43,10 @@ my @warnings = warnings {
     };
 };
 
-is(@warnings, 0, 'no warnings from compiling an executable using -T')
+# normally we'd see:
+# "-T" is on the #! line, it must also be used on the command line at ...
+# unless we also run perl -c with the -T flag.
+is(@warnings, 0, 'no warnings from compiling the executable using -T')
     or diag 'got warning(s): ', explain(\@warnings);
 
 had_no_warnings if $ENV{AUTHOR_TESTING};

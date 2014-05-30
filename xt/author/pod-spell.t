@@ -10,14 +10,14 @@ use Pod::Wordlist;
 add_stopwords(<DATA>);
 all_pod_files_spelling_ok( qw( bin lib  ) );
 __DATA__
-Jerome
+Jérôme
 Quelin
 Ahmad
 Zawawi
 azawawi
 Chris
 Weyl
-cweyl
+rsrchboy
 David
 Golden
 dagolden
@@ -27,10 +27,10 @@ haarg
 Harley
 Pig
 harleypig
-jquelin
 Jesse
 Luehrs
 doy
+jquelin
 Karen
 Etheridge
 ether

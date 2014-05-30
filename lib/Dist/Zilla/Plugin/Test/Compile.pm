@@ -1,7 +1,7 @@
 #
 # This file is part of Dist-Zilla-Plugin-Test-Compile
 #
-# This software is copyright (c) 2009 by Jerome Quelin.
+# This software is copyright (c) 2009 by Jérôme Quelin.
 #
 # This is free software; you can redistribute it and/or modify it under
 # the same terms as the Perl 5 programming language system itself.
@@ -14,8 +14,8 @@ package Dist::Zilla::Plugin::Test::Compile;
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
-# git description: v2.039-11-g85981bc
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.040';
+# git description: v2.040-11-g7f382a1
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.041';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -336,18 +336,13 @@ __PACKAGE__->meta->make_immutable;
 
 =encoding UTF-8
 
-=for :stopwords Jerome Quelin Ahmad Pig Jesse Luehrs Karen Etheridge Kent Fredric Marcel M.
-Gruenauer Olivier Mengué Peter Shangov Randy Stauner Ricardo SIGNES fayland
-Zawawi Chris Weyl David Golden Graham Knop Harley cpantesters FileFinder
-executables
-
 =head1 NAME
 
 Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your modules, only using core modules
 
 =head1 VERSION
 
-version 2.040
+version 2.041
 
 =head1 SYNOPSIS
 
@@ -402,6 +397,8 @@ This option can be repeated to specify multiple additional files.
     gather_files
     munge_file
 
+=for stopwords cpantesters
+
 =item * C<fake_home>: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
 This may be needed if your module unilaterally creates stuff in the user's home directory:
 indeed, some cpantesters will smoke test your distribution with a read-only home
@@ -431,6 +428,8 @@ of all subsequent tests when compilation failures are encountered. Defaults to f
 
 =item * C<module_finder>
 
+=for stopwords FileFinder
+
 This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
 modules to check.  The default value is C<:InstallModules>; this option can be
 used more than once.  .pod files are always omitted.
@@ -442,6 +441,8 @@ L<[FileFinder::ByName]|Dist::Zilla::Plugin::FileFinder::ByName> and
 L<[FileFinder::Filter]|Dist::Zilla::Plugin::FileFinder::Filter> plugins.
 
 =item * C<script_finder>
+
+=for stopwords executables
 
 Just like C<module_finder>, but for finding scripts.  The default value is
 C<:ExecFiles> (see also L<Dist::Zilla::Plugin::ExecDir>, to make sure these
@@ -466,11 +467,11 @@ default C<dependency> phase becomes C<develop>.
 
 =head1 AUTHOR
 
-Jerome Quelin
+Jérôme Quelin
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Jerome Quelin.
+This software is copyright (c) 2009 by Jérôme Quelin.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
@@ -485,7 +486,7 @@ Ahmad M. Zawawi <azawawi@ubuntu.(none)>
 
 =item *
 
-Chris Weyl <cweyl@alumni.drew.edu>
+Chris Weyl <rsrchboy@cpan.org>
 
 =item *
 
@@ -501,11 +502,11 @@ Harley Pig <harleypig@gmail.com>
 
 =item *
 
-Jerome Quelin <jquelin@gmail.com>
+Jesse Luehrs <doy@tozt.net>
 
 =item *
 
-Jesse Luehrs <doy@tozt.net>
+Jérôme Quelin <jquelin@gmail.com>
 
 =item *
 
@@ -628,9 +629,9 @@ foreach my $file (@scripts)
 { SKIP: {
     open my $fh, '<', $file or warn("Unable to open $file: $!"), next;
     my $line = <$fh>;
-    close $fh and skip("$file isn't perl", 1) unless $line =~ /^#!.*?\bperl\b\s*(.*)$/;
 
-    my @flags = $1 ? split(/\s+/, $1) : ();
+    close $fh and skip("$file isn't perl", 1) unless $line =~ /^#!\s*(?:\S*perl\S*)((?:\s+-\w*)*)(?:\s*#.*)?$/;
+    my @flags = $1 ? split(' ', $1) : ();
 
     my $stderr = IO::Handle->new;
 
