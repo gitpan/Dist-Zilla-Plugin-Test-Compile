@@ -14,8 +14,8 @@ package Dist::Zilla::Plugin::Test::Compile;
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
-# git description: v2.040-11-g7f382a1
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.041';
+# git description: v2.041-3-g10dd95c
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.042';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -213,7 +213,6 @@ __PACKAGE__->meta->make_immutable;
 #pod     gather_files
 #pod     munge_file
 #pod
-#pod
 #pod =head1 SYNOPSIS
 #pod
 #pod In your F<dist.ini>:
@@ -224,7 +223,6 @@ __PACKAGE__->meta->make_immutable;
 #pod     needs_display = 1
 #pod     fail_on_warning = author
 #pod     bail_out_on_fail = 1
-#pod
 #pod
 #pod =head1 DESCRIPTION
 #pod
@@ -242,37 +240,50 @@ __PACKAGE__->meta->make_immutable;
 #pod
 #pod This plugin accepts the following options:
 #pod
-#pod =over 4
+#pod =head1 CONFIGURATION OPTIONS
 #pod
-#pod =item * C<filename>: the name of the generated file. Defaults to
-#pod F<t/00-compile.t>.
+#pod =head2 C<filename>
 #pod
-#pod =item * C<phase>: the phase for which to register prerequisites. Defaults
+#pod The name of the generated file. Defaults to F<t/00-compile.t>
+#pod
+#pod =head2 C<phase>
+#pod
+#pod The phase for which to register prerequisites. Defaults
 #pod to C<test>.  Setting this to a false value will disable prerequisite
 #pod registration.
 #pod
-#pod =item * C<skip>: a regex to skip compile test for B<modules> matching it. The
+#pod =head2 C<skip>
+#pod
+#pod A regex to skip compile test for B<modules> matching it. The
 #pod match is done against the module name (C<Foo::Bar>), not the file path
 #pod (F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
 #pod
-#pod =item * C<file>: a filename to also test, in addition to any files found
+#pod =head2 C<file>
+#pod
+#pod A filename to also test, in addition to any files found
 #pod earlier.  It will be tested as a module if it ends with C<.pm> or C<.PM>,
 #pod and as a script otherwise.
 #pod Module filenames should be relative to F<lib>; others should be relative to
 #pod the base of the repository.
 #pod This option can be repeated to specify multiple additional files.
 #pod
+#pod =head2 C<fake_home>
+#pod
 #pod =for stopwords cpantesters
 #pod
-#pod =item * C<fake_home>: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
+#pod A boolean to indicate whether to fake C<< $ENV{HOME} >>.
 #pod This may be needed if your module unilaterally creates stuff in the user's home directory:
 #pod indeed, some cpantesters will smoke test your distribution with a read-only home
 #pod directory. Defaults to false.
 #pod
-#pod =item * C<needs_display>: a boolean to indicate whether to skip the compile test
+#pod =head2 C<needs_display>
+#pod
+#pod A boolean to indicate whether to skip the compile test
 #pod on non-Win32 systems when C<< $ENV{DISPLAY} >> is not set. Defaults to false.
 #pod
-#pod =item * C<fail_on_warning>: a string to indicate when to add a test for
+#pod =head2 C<fail_on_warning>
+#pod
+#pod A string to indicate when to add a test for
 #pod warnings during compilation checks. Possible values are:
 #pod
 #pod =over 4
@@ -288,16 +299,18 @@ __PACKAGE__->meta->make_immutable;
 #pod
 #pod =back
 #pod
-#pod =item * C<bail_out_on_fail>: a boolean to indicate whether the test will BAIL_OUT
+#pod =head2 C<bail_out_on_fail>
+#pod
+#pod A boolean to indicate whether the test will BAIL_OUT
 #pod of all subsequent tests when compilation failures are encountered. Defaults to false.
 #pod
-#pod =item * C<module_finder>
+#pod =head2 C<module_finder>
 #pod
 #pod =for stopwords FileFinder
 #pod
 #pod This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
 #pod modules to check.  The default value is C<:InstallModules>; this option can be
-#pod used more than once.  .pod files are always omitted.
+#pod used more than once.  F<.pod> files are always skipped.
 #pod
 #pod Other predefined finders are listed in
 #pod L<Dist::Zilla::Role::FileFinderUser/default_finders>.
@@ -305,7 +318,7 @@ __PACKAGE__->meta->make_immutable;
 #pod L<[FileFinder::ByName]|Dist::Zilla::Plugin::FileFinder::ByName> and
 #pod L<[FileFinder::Filter]|Dist::Zilla::Plugin::FileFinder::Filter> plugins.
 #pod
-#pod =item * C<script_finder>
+#pod =head2 C<script_finder>
 #pod
 #pod =for stopwords executables
 #pod
@@ -313,22 +326,16 @@ __PACKAGE__->meta->make_immutable;
 #pod C<:ExecFiles> (see also L<Dist::Zilla::Plugin::ExecDir>, to make sure these
 #pod files are properly marked as executables for the installer).
 #pod
-#pod =item * C<xt_mode>
+#pod =head2 C<xt_mode>
 #pod
 #pod When true, the default C<filename> becomes F<xt/author/00-compile.t> and the
 #pod default C<dependency> phase becomes C<develop>.
 #pod
-#pod =back
-#pod
 #pod =head1 SEE ALSO
 #pod
-#pod =over 4
-#pod
-#pod =item * L<Test::NeedsDisplay>
-#pod
-#pod =item * L<Test::Script>
-#pod
-#pod =back
+#pod =for :list
+#pod * L<Test::NeedsDisplay>
+#pod * L<Test::Script>
 #pod
 #pod =cut
 
@@ -342,7 +349,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.041
+version 2.042
 
 =head1 SYNOPSIS
 
@@ -371,43 +378,56 @@ test still runs on perl 5.6).
 
 This plugin accepts the following options:
 
-=over 4
-
-=item * C<filename>: the name of the generated file. Defaults to
-F<t/00-compile.t>.
-
-=item * C<phase>: the phase for which to register prerequisites. Defaults
-to C<test>.  Setting this to a false value will disable prerequisite
-registration.
-
-=item * C<skip>: a regex to skip compile test for B<modules> matching it. The
-match is done against the module name (C<Foo::Bar>), not the file path
-(F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
-
-=item * C<file>: a filename to also test, in addition to any files found
-earlier.  It will be tested as a module if it ends with C<.pm> or C<.PM>,
-and as a script otherwise.
-Module filenames should be relative to F<lib>; others should be relative to
-the base of the repository.
-This option can be repeated to specify multiple additional files.
-
 =for Pod::Coverage::TrustPod mvp_multivalue_args
     mvp_aliases
     register_prereqs
     gather_files
     munge_file
 
+=head1 CONFIGURATION OPTIONS
+
+=head2 C<filename>
+
+The name of the generated file. Defaults to F<t/00-compile.t>
+
+=head2 C<phase>
+
+The phase for which to register prerequisites. Defaults
+to C<test>.  Setting this to a false value will disable prerequisite
+registration.
+
+=head2 C<skip>
+
+A regex to skip compile test for B<modules> matching it. The
+match is done against the module name (C<Foo::Bar>), not the file path
+(F<lib/Foo/Bar.pm>).  This option can be repeated to specify multiple regexes.
+
+=head2 C<file>
+
+A filename to also test, in addition to any files found
+earlier.  It will be tested as a module if it ends with C<.pm> or C<.PM>,
+and as a script otherwise.
+Module filenames should be relative to F<lib>; others should be relative to
+the base of the repository.
+This option can be repeated to specify multiple additional files.
+
+=head2 C<fake_home>
+
 =for stopwords cpantesters
 
-=item * C<fake_home>: a boolean to indicate whether to fake C<< $ENV{HOME} >>.
+A boolean to indicate whether to fake C<< $ENV{HOME} >>.
 This may be needed if your module unilaterally creates stuff in the user's home directory:
 indeed, some cpantesters will smoke test your distribution with a read-only home
 directory. Defaults to false.
 
-=item * C<needs_display>: a boolean to indicate whether to skip the compile test
+=head2 C<needs_display>
+
+A boolean to indicate whether to skip the compile test
 on non-Win32 systems when C<< $ENV{DISPLAY} >> is not set. Defaults to false.
 
-=item * C<fail_on_warning>: a string to indicate when to add a test for
+=head2 C<fail_on_warning>
+
+A string to indicate when to add a test for
 warnings during compilation checks. Possible values are:
 
 =over 4
@@ -423,16 +443,18 @@ Perl release)
 
 =back
 
-=item * C<bail_out_on_fail>: a boolean to indicate whether the test will BAIL_OUT
+=head2 C<bail_out_on_fail>
+
+A boolean to indicate whether the test will BAIL_OUT
 of all subsequent tests when compilation failures are encountered. Defaults to false.
 
-=item * C<module_finder>
+=head2 C<module_finder>
 
 =for stopwords FileFinder
 
 This is the name of a L<FileFinder|Dist::Zilla::Role::FileFinder> for finding
 modules to check.  The default value is C<:InstallModules>; this option can be
-used more than once.  .pod files are always omitted.
+used more than once.  F<.pod> files are always skipped.
 
 Other predefined finders are listed in
 L<Dist::Zilla::Role::FileFinderUser/default_finders>.
@@ -440,7 +462,7 @@ You can define your own with the
 L<[FileFinder::ByName]|Dist::Zilla::Plugin::FileFinder::ByName> and
 L<[FileFinder::Filter]|Dist::Zilla::Plugin::FileFinder::Filter> plugins.
 
-=item * C<script_finder>
+=head2 C<script_finder>
 
 =for stopwords executables
 
@@ -448,20 +470,22 @@ Just like C<module_finder>, but for finding scripts.  The default value is
 C<:ExecFiles> (see also L<Dist::Zilla::Plugin::ExecDir>, to make sure these
 files are properly marked as executables for the installer).
 
-=item * C<xt_mode>
+=head2 C<xt_mode>
 
 When true, the default C<filename> becomes F<xt/author/00-compile.t> and the
 default C<dependency> phase becomes C<develop>.
-
-=back
 
 =head1 SEE ALSO
 
 =over 4
 
-=item * L<Test::NeedsDisplay>
+=item *
 
-=item * L<Test::Script>
+L<Test::NeedsDisplay>
+
+=item *
+
+L<Test::Script>
 
 =back
 
