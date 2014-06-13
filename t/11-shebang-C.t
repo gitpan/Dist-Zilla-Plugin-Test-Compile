@@ -1,11 +1,15 @@
 use strict;
 use warnings FATAL => 'all';
 
+use utf8;
 use Test::More;
 use Test::Warnings 0.009 ':no_end_test', ':all';
 use Test::DZil;
 use Path::Tiny;
 use File::pushd 'pushd';
+
+plan skip_all => 'These tests use options that are only legal in perl 5.14.0 and higher'
+    if $] < 5.014000;
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },

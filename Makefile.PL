@@ -54,9 +54,10 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.94",
     "Test::Warnings" => "0.009",
     "if" => 0,
+    "utf8" => 0,
     "version" => 0
   },
-  "VERSION" => "2.042",
+  "VERSION" => "2.043",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -95,6 +96,7 @@ my %FallbackPrereqs = (
   "if" => 0,
   "namespace::autoclean" => 0,
   "strict" => 0,
+  "utf8" => 0,
   "version" => 0,
   "warnings" => 0
 );

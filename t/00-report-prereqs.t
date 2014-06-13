@@ -58,7 +58,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.064'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.065'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.000',
@@ -135,6 +135,7 @@ my $static_prereqs = do { my $x = {
                                    'Test::More' => '0.94',
                                    'Test::Warnings' => '0.009',
                                    'if' => '0',
+                                   'utf8' => '0',
                                    'version' => '0'
                                  }
                  }

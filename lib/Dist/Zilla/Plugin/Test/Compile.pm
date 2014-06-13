@@ -14,8 +14,8 @@ package Dist::Zilla::Plugin::Test::Compile;
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
-# git description: v2.041-3-g10dd95c
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.042';
+# git description: v2.042-2-ga0ebc43
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.043';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -349,7 +349,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.042
+version 2.043
 
 =head1 SYNOPSIS
 

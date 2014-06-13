@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.043     2014-06-13 21:00:24Z
+ - fix remaining failures on 5.10.0 (due to buggy -C flags) introduced in
+   2.041
+
 2.042     2014-06-04 02:28:25Z
  - fix test failures on older perls introduced in 2.041
 
