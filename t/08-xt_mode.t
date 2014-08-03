@@ -6,6 +6,7 @@ use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
 use File::pushd 'pushd';
+use Test::Deep;
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
@@ -26,6 +27,23 @@ my $build_dir = path($tzil->tempdir)->child('build');
 ok(!-e $build_dir->child(qw(t 00-compile.t)), 'default test not created');
 my $file = $build_dir->child(qw(xt author 00-compile.t));
 ok(-e $file, 'test created using new name');
+
+cmp_deeply(
+    $tzil->distmeta,
+    superhashof({
+        prereqs => {
+            develop => {
+                requires => {
+                    'Test::More' => '0',
+                    'File::Spec' => '0',
+                    'IPC::Open3' => '0',
+                    'IO::Handle' => '0',
+                },
+            },
+        },
+    }),
+    'prereqs are properly injected for the develop phase',
+);
 
 my $files_tested;
 subtest 'run the generated test' => sub

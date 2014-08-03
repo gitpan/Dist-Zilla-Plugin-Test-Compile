@@ -14,9 +14,10 @@ package Dist::Zilla::Plugin::Test::Compile;
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
-# git description: v2.042-2-ga0ebc43
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.043';
+# git description: v2.043-5-gf08bc0a
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.044';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
+# KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
@@ -140,23 +141,30 @@ sub register_prereqs
     );
 }
 
+has _file => (
+    is => 'rw', isa => role_type('Dist::Zilla::Role::File'),
+);
+
 sub gather_files
 {
     my $self = shift;
 
     require Dist::Zilla::File::InMemory;
 
-    $self->add_file( Dist::Zilla::File::InMemory->new(
-        name => $self->filename,
-        content => ${$self->section_data('test-compile')},
-    ));
+    $self->add_file( $self->_file(
+        Dist::Zilla::File::InMemory->new(
+            name => $self->filename,
+            content => ${$self->section_data('test-compile')},
+        ))
+    );
+    return;
 }
 
 sub munge_file
 {
     my ($self, $file) = @_;
 
-    return unless $file->name eq $self->filename;
+    return unless $file == $self->_file;
 
     my @skips = map {; qr/$_/ } $self->skips;
 
@@ -349,7 +357,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.043
+version 2.044
 
 =head1 SYNOPSIS
 
