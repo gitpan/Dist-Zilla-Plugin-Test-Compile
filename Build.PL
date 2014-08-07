@@ -64,7 +64,7 @@ EOW
         "J\x{e9}r\x{f4}me Quelin"
       ],
       "dist_name" => "Dist-Zilla-Plugin-Test-Compile",
-      "dist_version" => "2.044",
+      "dist_version" => "2.045",
       "license" => "perl",
       "module_name" => "Dist::Zilla::Plugin::Test::Compile",
       "recommends" => {},

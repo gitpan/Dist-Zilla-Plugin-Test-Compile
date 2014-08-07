@@ -43,7 +43,7 @@ cmp_deeply(
         },
     }),
     'prereqs are properly injected for the develop phase',
-);
+) or diag 'got distmeta: ', explain $tzil->distmeta;
 
 my $files_tested;
 subtest 'run the generated test' => sub
@@ -52,7 +52,8 @@ subtest 'run the generated test' => sub
     # intentionally not running Makefile.PL...
 
     do $file;
-    warn $@ if $@;
+    note 'ran tests successfully' if not $@;
+    fail($@) if $@;
 
     $files_tested = Test::Builder->new->current_test;
 };

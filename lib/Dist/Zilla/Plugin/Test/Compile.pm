@@ -14,8 +14,8 @@ package Dist::Zilla::Plugin::Test::Compile;
 BEGIN {
   $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
 }
-# git description: v2.043-5-gf08bc0a
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.044';
+# git description: v2.044-5-g940b95e
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.045';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
@@ -115,9 +115,10 @@ around dump_config => sub
     my $config = $self->$orig;
 
     $config->{+__PACKAGE__} = {
-         module_finder => $self->module_finder,
-         script_finder => $self->script_finder,
-         filename => $self->filename,
+        module_finder => $self->module_finder,
+        script_finder => $self->script_finder,
+        skips => [ $self->skips ],
+        map { $_ => $self->$_ } qw(filename fake_home needs_display fail_on_warning bail_out_on_fail phase),
     };
     return $config;
 };
@@ -357,7 +358,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.044
+version 2.045
 
 =head1 SYNOPSIS
 
@@ -510,6 +511,8 @@ the same terms as the Perl 5 programming language system itself.
 
 =head1 CONTRIBUTORS
 
+=for stopwords Ahmad M. Zawawi Chris Weyl David Golden Graham Knop Harley Pig Jesse Luehrs Jérôme Quelin Kent Fredric Marcel Gruenauer Olivier Mengué Peter Shangov Randy Stauner Ricardo SIGNES fayland
+
 =over 4
 
 =item *
@@ -518,7 +521,7 @@ Ahmad M. Zawawi <azawawi@ubuntu.(none)>
 
 =item *
 
-Chris Weyl <rsrchboy@cpan.org>
+Chris Weyl <cweyl@alumni.drew.edu>
 
 =item *
 
@@ -539,10 +542,6 @@ Jesse Luehrs <doy@tozt.net>
 =item *
 
 Jérôme Quelin <jquelin@gmail.com>
-
-=item *
-
-Karen Etheridge <ether@cpan.org>
 
 =item *
 

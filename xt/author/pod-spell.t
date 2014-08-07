@@ -17,7 +17,7 @@ Zawawi
 azawawi
 Chris
 Weyl
-rsrchboy
+cweyl
 David
 Golden
 dagolden
@@ -31,9 +31,6 @@ Jesse
 Luehrs
 doy
 jquelin
-Karen
-Etheridge
-ether
 Kent
 Fredric
 kentfredric

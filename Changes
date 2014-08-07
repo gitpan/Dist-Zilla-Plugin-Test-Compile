@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.045     2014-08-07 04:25:14Z
+ - re-release to remove README.pod from shipped dist
+
 2.044     2014-08-03 01:11:31Z
  - clean up dynamic prerequisite calculations
  - munge the file properly even if [ExtraTests] has already moved it

@@ -47,7 +47,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: '2.044'
+    version: '2.045'
 requires:
   Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
@@ -71,10 +71,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile.git
-version: '2.044'
+version: '2.045'
 x_Dist_Zilla:
   perl:
-    version: '5.021001'
+    version: '5.021002'
   plugins:
     -
       class: Dist::Zilla::Plugin::Prepender
@@ -89,17 +89,23 @@ x_Dist_Zilla:
           try_built: ~
           try_built_method: mtime
       name: Bootstrap::lib
-      version: '1.000003'
+      version: '1.000004'
     -
       class: Dist::Zilla::Plugin::Test::Compile
       config:
         Dist::Zilla::Plugin::Test::Compile:
+          bail_out_on_fail: '1'
+          fail_on_warning: author
+          fake_home: '0'
           filename: t/00-compile.t
           module_finder:
             - ':InstallModules'
+          needs_display: '0'
+          phase: test
           script_finder:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
+          skips: []
       name: Test::Compile
       version: ~
     -
@@ -347,7 +353,7 @@ x_Dist_Zilla:
             -
               class: Pod::Weaver::Section::Contributors
               name: Contributors
-              version: '0.007'
+              version: '0.007001'
       name: '@Author::ETHER/PodWeaver'
       version: '4.005'
     -
@@ -357,7 +363,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
-      version: '0.141760'
+      version: '0.142180'
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
@@ -396,6 +402,14 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Keywords'
       version: '0.005'
     -
+      class: Dist::Zilla::Plugin::Git::Contributors
+      config:
+        Dist::Zilla::Plugin::Git::Contributors:
+          include_authors: '1'
+          include_releaser: '0'
+      name: '@Author::ETHER/Git::Contributors'
+      version: '0.003'
+    -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: '@Author::ETHER/AutoPrereqs'
       version: '5.020'
@@ -421,7 +435,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::TestRunner:
           default_jobs: 9
       name: '@Author::ETHER/MakeMaker::Fallback'
-      version: '0.010'
+      version: '0.011'
     -
       class: Dist::Zilla::Plugin::ModuleBuildTiny::Fallback
       config:
@@ -450,8 +464,12 @@ x_Dist_Zilla:
       version: '0.007'
     -
       class: Dist::Zilla::Plugin::Run::AfterBuild
+      config:
+        Dist::Zilla::Plugin::Run::Role::Runner:
+          run:
+            - "bash -c \"if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi\""
       name: '@Author::ETHER/Run::AfterBuild'
-      version: '0.022'
+      version: '0.023'
     -
       class: Dist::Zilla::Plugin::CheckStrictVersion
       name: '@Author::ETHER/CheckStrictVersion'
@@ -486,7 +504,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Remote::Check
       name: '@Author::ETHER/Git::Remote::Check'
-      version: 0.2.0
+      version: 0.1.2
     -
       class: Dist::Zilla::Plugin::CheckPrereqsIndexed
       name: '@Author::ETHER/CheckPrereqsIndexed'
@@ -522,8 +540,12 @@ x_Dist_Zilla:
       version: '0.001'
     -
       class: Dist::Zilla::Plugin::Run::AfterRelease
-      name: '@Author::ETHER/Run::AfterRelease'
-      version: '0.022'
+      config:
+        Dist::Zilla::Plugin::Run::Role::Runner:
+          run:
+            - 'rm -f README.md'
+      name: '@Author::ETHER/remove old READMEs'
+      version: '0.023'
     -
       class: Dist::Zilla::Plugin::Git::Commit
       config:
@@ -551,7 +573,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v2.044
+          tag: v2.045
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -575,9 +597,12 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Git::Push'
       version: '2.023'
     -
-      class: Dist::Zilla::Plugin::InstallRelease
-      name: '@Author::ETHER/InstallRelease'
-      version: '0.008'
+      class: Dist::Zilla::Plugin::Run::AfterRelease
+      config:
+        Dist::Zilla::Plugin::Run::Role::Runner:
+          run: REDACTED
+      name: '@Author::ETHER/install release'
+      version: '0.023'
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Author::ETHER/ConfirmRelease'
@@ -627,10 +652,6 @@ x_Dist_Zilla:
       name: DevelopRequires
       version: '5.020'
     -
-      class: Dist::Zilla::Plugin::ContributorsFromGit
-      name: ContributorsFromGit
-      version: '0.014'
-    -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
       version: '5.020'
@@ -678,13 +699,12 @@ x_breaks:
   Test::Kwalitee::Extra: '<= v0.0.8'
 x_contributors:
   - 'Ahmad M. Zawawi <azawawi@ubuntu.(none)>'
-  - 'Chris Weyl <rsrchboy@cpan.org>'
+  - 'Chris Weyl <cweyl@alumni.drew.edu>'
   - 'David Golden <dagolden@cpan.org>'
   - 'Graham Knop <haarg@haarg.org>'
   - 'Harley Pig <harleypig@gmail.com>'
   - 'Jesse Luehrs <doy@tozt.net>'
   - 'Jérôme Quelin <jquelin@gmail.com>'
-  - 'Karen Etheridge <ether@cpan.org>'
   - 'Kent Fredric <kentfredric@gmail.com>'
   - 'Marcel Gruenauer <hanekomu@gmail.com>'
   - 'Olivier Mengué <dolmen@cpan.org>'
