@@ -11,11 +11,8 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
-BEGIN {
-  $Dist::Zilla::Plugin::Test::Compile::AUTHORITY = 'cpan:JQUELIN';
-}
-# git description: v2.044-5-g940b95e
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.045';
+# git description: v2.045-5-gf751ced
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.046';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
@@ -358,7 +355,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.045
+version 2.046
 
 =head1 SYNOPSIS
 
@@ -511,33 +508,13 @@ the same terms as the Perl 5 programming language system itself.
 
 =head1 CONTRIBUTORS
 
-=for stopwords Ahmad M. Zawawi Chris Weyl David Golden Graham Knop Harley Pig Jesse Luehrs Jérôme Quelin Kent Fredric Marcel Gruenauer Olivier Mengué Peter Shangov Randy Stauner Ricardo SIGNES fayland
+=for stopwords Karen Etheridge Jérôme Quelin Ahmad M. Zawawi Olivier Mengué Kent Fredric Jesse Luehrs David Golden Randy Stauner Harley Pig Graham Knop fayland Peter Shangov Chris Weyl Ricardo SIGNES Marcel Gruenauer
 
 =over 4
 
 =item *
 
-Ahmad M. Zawawi <azawawi@ubuntu.(none)>
-
-=item *
-
-Chris Weyl <cweyl@alumni.drew.edu>
-
-=item *
-
-David Golden <dagolden@cpan.org>
-
-=item *
-
-Graham Knop <haarg@haarg.org>
-
-=item *
-
-Harley Pig <harleypig@gmail.com>
-
-=item *
-
-Jesse Luehrs <doy@tozt.net>
+Karen Etheridge <ether@cpan.org>
 
 =item *
 
@@ -545,11 +522,7 @@ Jérôme Quelin <jquelin@gmail.com>
 
 =item *
 
-Kent Fredric <kentfredric@gmail.com>
-
-=item *
-
-Marcel Gruenauer <hanekomu@gmail.com>
+Ahmad M. Zawawi <azawawi@ubuntu.(none)>
 
 =item *
 
@@ -557,7 +530,15 @@ Olivier Mengué <dolmen@cpan.org>
 
 =item *
 
-Peter Shangov <pshangov@yahoo.com>
+Kent Fredric <kentnl@cpan.org>
+
+=item *
+
+Jesse Luehrs <doy@tozt.net>
+
+=item *
+
+David Golden <dagolden@cpan.org>
 
 =item *
 
@@ -565,11 +546,31 @@ Randy Stauner <randy@magnificent-tears.com>
 
 =item *
 
-Ricardo SIGNES <rjbs@cpan.org>
+Harley Pig <harleypig@gmail.com>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
 
 =item *
 
 fayland <fayland@gmail.com>
+
+=item *
+
+Peter Shangov <pshangov@yahoo.com>
+
+=item *
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=item *
+
+Ricardo SIGNES <rjbs@cpan.org>
+
+=item *
+
+Marcel Gruenauer <hanekomu@gmail.com>
 
 =back
 
@@ -687,7 +688,7 @@ CODE
 
 {{
 ($fail_on_warning ne 'none'
-    ? q{is(scalar(@warnings), 0, 'no warnings found')}
+    ? q{is(scalar(@warnings), 0, 'no warnings found') or diag 'got warnings: ', explain \@warnings}
     : '# no warning checks')
 .
 ($fail_on_warning eq 'author'

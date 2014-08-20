@@ -27,11 +27,15 @@ MODULE
     },
 );
 
+$tzil->chrome->logger->set_debug(1);
 $tzil->build;
 
 my $build_dir = path($tzil->tempdir)->child('build');
 my $file = $build_dir->child(qw(t 00-compile.t));
 ok( -e $file, 'test created');
+
+my $content = $file->slurp_utf8;
+unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 
 my $files_tested;
 my $warning = warning {
@@ -54,6 +58,9 @@ like(
 ) or diag 'got warning(s): ', explain($warning);
 
 is($files_tested, 1, 'correct number of files were tested (no warning checks)');
+
+diag 'got log messages: ', explain $tzil->log_messages
+    if not Test::Builder->new->is_passing;
 
 had_no_warnings if $ENV{AUTHOR_TESTING};
 done_testing;
