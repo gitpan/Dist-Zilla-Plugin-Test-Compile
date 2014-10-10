@@ -11,8 +11,8 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
-# git description: v2.045-5-gf751ced
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.046';
+# git description: v2.046-2-gbb4715a
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.047';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
@@ -355,7 +355,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.046
+version 2.047
 
 =head1 SYNOPSIS
 
@@ -688,7 +688,8 @@ CODE
 
 {{
 ($fail_on_warning ne 'none'
-    ? q{is(scalar(@warnings), 0, 'no warnings found') or diag 'got warnings: ', explain \@warnings}
+    ? q{is(scalar(@warnings), 0, 'no warnings found')} . "\n"
+        . q{  or diag 'got warnings: ', ( Test::More->can('explain') ? Test::More::explain(\@warnings) : join("\n", '', @warnings) )}
     : '# no warning checks')
 .
 ($fail_on_warning eq 'author'

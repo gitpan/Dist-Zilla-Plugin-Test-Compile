@@ -72,6 +72,7 @@ foreach my $file (@scripts)
 
 
 
-is(scalar(@warnings), 0, 'no warnings found') or diag 'got warnings: ', explain \@warnings if $ENV{AUTHOR_TESTING};
+is(scalar(@warnings), 0, 'no warnings found')
+  or diag 'got warnings: ', ( Test::More->can('explain') ? Test::More::explain(\@warnings) : join("\n", '', @warnings) ) if $ENV{AUTHOR_TESTING};
 
 BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;
