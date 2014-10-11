@@ -26,6 +26,7 @@ my @files = (
     't/12-shebang-comment.t',
     't/13-shebang-dashes.t',
     't/14-extratests.t',
+    't/15-needs-display.t',
     't/zzz-check-breaks.t',
     'xt/author/clean-namespaces.t',
     'xt/author/no-tabs.t',

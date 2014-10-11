@@ -182,7 +182,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::Compile" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/Compile.pm",
-         "version" : "2.047"
+         "version" : "2.048"
       }
    },
    "release_status" : "stable",
@@ -200,7 +200,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "2.047",
+   "version" : "2.048",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.021003"
@@ -271,7 +271,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::NextVersion",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -334,7 +334,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::GatherDir",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaYAML",
@@ -809,7 +809,7 @@
                }
             },
             "name" : "@Author::ETHER/initial check",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts",
@@ -862,7 +862,7 @@
                }
             },
             "name" : "@Author::ETHER/after tests",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckIssues",
@@ -917,7 +917,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Commit",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Tag",
@@ -925,7 +925,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v2.047",
+                  "tag" : "v2.048",
                   "tag_format" : "v%v%t",
                   "tag_message" : "v%v%t",
                   "time_zone" : "local"
@@ -935,7 +935,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Tag",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
@@ -956,7 +956,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Push",
-            "version" : "2.024"
+            "version" : "2.025"
          },
          {
             "class" : "Dist::Zilla::Plugin::Run::AfterRelease",

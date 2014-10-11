@@ -31,6 +31,7 @@ t/11-shebang-C.t
 t/12-shebang-comment.t
 t/13-shebang-dashes.t
 t/14-extratests.t
+t/15-needs-display.t
 t/zzz-check-breaks.t
 weaver.ini
 xt/author/clean-namespaces.t

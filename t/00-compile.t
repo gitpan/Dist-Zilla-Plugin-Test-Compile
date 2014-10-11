@@ -4,9 +4,9 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::Compile <self>
 
-use Test::More 0.94 tests => 2 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More 0.94;
 
-
+plan tests => 2 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 my @module_files = (
     'Dist/Zilla/Plugin/Test/Compile.pm'
@@ -73,6 +73,6 @@ foreach my $file (@scripts)
 
 
 is(scalar(@warnings), 0, 'no warnings found')
-  or diag 'got warnings: ', ( Test::More->can('explain') ? Test::More::explain(\@warnings) : join("\n", '', @warnings) ) if $ENV{AUTHOR_TESTING};
+    or diag 'got warnings: ', explain(\@warnings) if $ENV{AUTHOR_TESTING};
 
 BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;

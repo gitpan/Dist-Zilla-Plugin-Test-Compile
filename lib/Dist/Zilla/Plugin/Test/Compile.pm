@@ -11,8 +11,8 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
-# git description: v2.046-2-gbb4715a
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.047';
+# git description: v2.047-4-gc486fb2
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.048';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
@@ -355,7 +355,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.047
+version 2.048
 
 =head1 SYNOPSIS
 
@@ -584,26 +584,23 @@ use warnings;
 
 # this test was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
 
-use Test::More {{ $test_more_version || '' }} tests => {{
+use Test::More{{ $test_more_version ? " $test_more_version" : '' }};
+{{
+$needs_display
+    ? <<'CODE'
+# Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
+if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
+    plan skip_all => 'Needs DISPLAY';
+}
+CODE
+    : ''
+}}
+plan tests => {{
     my $count = @module_filenames + @script_filenames;
     $count += 1 if $fail_on_warning eq 'all';
     $count .= ' + ($ENV{AUTHOR_TESTING} ? 1 : 0)' if $fail_on_warning eq 'author';
     $count;
 }};
-
-{{
-$needs_display
-    ? <<'CODE'
-BEGIN {
-    # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
-    if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
-        plan skip_all => 'Needs DISPLAY';
-        exit 0;
-    }
-}
-CODE
-    : ''
-}}
 
 my @module_files = (
 {{ join(",\n", map { "    '" . $_ . "'" } map { s/'/\\'/g; $_ } sort @module_filenames) }}
@@ -689,7 +686,11 @@ CODE
 {{
 ($fail_on_warning ne 'none'
     ? q{is(scalar(@warnings), 0, 'no warnings found')} . "\n"
-        . q{  or diag 'got warnings: ', ( Test::More->can('explain') ? Test::More::explain(\@warnings) : join("\n", '', @warnings) )}
+        . q{    or diag 'got warnings: ', }
+        . ( $test_more_version > 0.82
+            ? q{explain(\@warnings)}
+            : q{( Test::More->can('explain') ? Test::More::explain(\@warnings) : join("\n", '', @warnings) )}
+          )
     : '# no warning checks')
 .
 ($fail_on_warning eq 'author'

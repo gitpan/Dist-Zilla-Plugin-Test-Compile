@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.048     2014-10-11 21:54:16Z
+ - make tests (and generated test) run when needs_display=1 and $DISPLAY is
+   not set
+
 2.047     2014-10-10 05:19:20Z
  - avoid use of Test::More::explain in generated test when version is too old
 
