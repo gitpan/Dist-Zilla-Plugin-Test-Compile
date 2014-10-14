@@ -11,8 +11,8 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
-# git description: v2.047-4-gc486fb2
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.048';
+# git description: v2.048-3-g2d431c7
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.049';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
@@ -355,7 +355,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.048
+version 2.049
 
 =head1 SYNOPSIS
 

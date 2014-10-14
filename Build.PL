@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-if (eval 'use Module::Build::Tiny 0.038; 1')
+if (eval 'use Module::Build::Tiny 0.039; 1')
 {
     print "Congratulations, your toolchain understands 'configure_requires'!\n\n";
 
@@ -12,7 +12,7 @@ if (eval 'use Module::Build::Tiny 0.038; 1')
     use warnings;
 
     use 5.008;
-    # use Module::Build::Tiny 0.038;
+    # use Module::Build::Tiny 0.039;
     Build_PL();
 }
 else
@@ -63,14 +63,14 @@ EOW
       "build_requires" => {},
       "configure_requires" => {
         "ExtUtils::MakeMaker" => 0,
-        "Module::Build::Tiny" => "0.038"
+        "Module::Build::Tiny" => "0.039"
       },
       "dist_abstract" => "Common tests to check syntax of your modules, only using core modules",
       "dist_author" => [
         "J\x{e9}r\x{f4}me Quelin"
       ],
       "dist_name" => "Dist-Zilla-Plugin-Test-Compile",
-      "dist_version" => "2.048",
+      "dist_version" => "2.049",
       "license" => "perl",
       "module_name" => "Dist::Zilla::Plugin::Test::Compile",
       "recommends" => {},

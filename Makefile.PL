@@ -17,7 +17,7 @@ use warnings;
 BEGIN {
 my %configure_requires = (
     'ExtUtils::MakeMaker' => '0',
-    'Module::Build::Tiny' => '0.038',
+    'Module::Build::Tiny' => '0.039',
 );
 
 my @missing = grep {
@@ -77,7 +77,7 @@ my %WriteMakefileArgs = (
   "AUTHOR" => "J\x{e9}r\x{f4}me Quelin",
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
-    "Module::Build::Tiny" => "0.038"
+    "Module::Build::Tiny" => "0.039"
   },
   "DISTNAME" => "Dist-Zilla-Plugin-Test-Compile",
   "EXE_FILES" => [],
@@ -120,7 +120,7 @@ my %WriteMakefileArgs = (
     "utf8" => 0,
     "version" => 0
   },
-  "VERSION" => "2.048",
+  "VERSION" => "2.049",
   "test" => {
     "TESTS" => "t/*.t"
   }

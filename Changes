@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-Test-Compile
 
+2.049     2014-10-14 04:46:44Z
+ - use documented Test::Builder interface to examine test details
+
 2.048     2014-10-11 21:54:16Z
  - make tests (and generated test) run when needs_display=1 and $DISPLAY is
    not set
