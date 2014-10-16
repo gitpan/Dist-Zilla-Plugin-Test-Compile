@@ -47,7 +47,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::Compile:
     file: lib/Dist/Zilla/Plugin/Test/Compile.pm
-    version: '2.049'
+    version: '2.050'
 requires:
   Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
@@ -71,7 +71,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-Compile
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-Compile.git
-version: '2.049'
+version: '2.050'
 x_Dist_Zilla:
   perl:
     version: '5.021003'
@@ -630,7 +630,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v2.049
+          tag: v2.050
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
