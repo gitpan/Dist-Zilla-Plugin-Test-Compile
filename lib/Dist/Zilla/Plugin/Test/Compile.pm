@@ -11,8 +11,8 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::Test::Compile;
-# git description: v2.049-1-g6882f5e
-$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.050';
+# git description: v2.050-2-g09e54b3
+$Dist::Zilla::Plugin::Test::Compile::VERSION = '2.051';
 # ABSTRACT: Common tests to check syntax of your modules, only using core modules
 # KEYWORDS: plugin test compile verify validate load modules scripts
 # vim: set ts=8 sw=4 tw=78 et :
@@ -355,7 +355,7 @@ Dist::Zilla::Plugin::Test::Compile - Common tests to check syntax of your module
 
 =head1 VERSION
 
-version 2.050
+version 2.051
 
 =head1 SYNOPSIS
 
@@ -589,7 +589,7 @@ use Test::More{{ $test_more_version ? " $test_more_version" : '' }};
 $needs_display
     ? <<'CODE'
 # Skip all tests if you need a display for this test and $ENV{DISPLAY} is not set
-if( not $ENV{DISPLAY} and not $^O eq 'MSWin32' ) {
+if (not $ENV{DISPLAY} and $^O ne 'MSWin32') {
     plan skip_all => 'Needs DISPLAY';
 }
 CODE
